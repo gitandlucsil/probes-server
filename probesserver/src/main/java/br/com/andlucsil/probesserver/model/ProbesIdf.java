@@ -2,22 +2,25 @@ package br.com.andlucsil.probesserver.model;
 
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class ProbesIdf {
 	
-	private int id_value;
+	@Id
+	private Long id;
 	private String description;
-	private List<ProbesValues> probesvalues;
 	
 	public ProbesIdf() {
-		
 	}
 
-	public int getId_value() {
-		return id_value;
+	public Long getId() {
+		return id;
 	}
 
-	public void setId_value(int id_value) {
-		this.id_value = id_value;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getDescription() {
@@ -26,14 +29,6 @@ public class ProbesIdf {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public List<ProbesValues> getProbesvalues() {
-		return probesvalues;
-	}
-
-	public void setProbesvalues(List<ProbesValues> probesvalues) {
-		this.probesvalues = probesvalues;
 	}
 
 }

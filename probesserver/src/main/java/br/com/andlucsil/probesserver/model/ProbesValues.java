@@ -2,13 +2,18 @@ package br.com.andlucsil.probesserver.model;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class ProbesValues {
 
+	@Id
 	private Long id;
-	private ProbesIdf probesidf;
+	private int probesidf;
 	private int read_value;
-	private Date read_date;
-	private Date read_time;
+	private Date date;
+	private Date time;
 	
 	public ProbesValues() {
 		
@@ -20,10 +25,10 @@ public class ProbesValues {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public ProbesIdf getProbesidf() {
+	public int getProbesidf() {
 		return probesidf;
 	}
-	public void setProbesidf(ProbesIdf probesidf) {
+	public void setProbesidf(int probesidf) {
 		this.probesidf = probesidf;
 	}
 	public int getRead_value() {
@@ -32,17 +37,17 @@ public class ProbesValues {
 	public void setRead_value(int read_value) {
 		this.read_value = read_value;
 	}
-	public Date getRead_date() {
-		return read_date;
+	public Date getDate() {
+		return date;
 	}
-	public void setRead_date(Date read_date) {
-		this.read_date = read_date;
+	public void setDate(Date date) {
+		this.date = date;
 	}
-	public Date getRead_time() {
-		return read_time;
+	public Date getTime() {
+		return time;
 	}
-	public void setRead_time(Date read_time) {
-		this.read_time = read_time;
+	public void setTime(Date time) {
+		this.time = time;
 	}
 	
 	
