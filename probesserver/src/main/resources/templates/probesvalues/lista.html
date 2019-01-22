@@ -25,8 +25,8 @@
 					<tr th:each="probesvalues: ${reads}">
 						<td th:text="${probesvalues.id}" />
 						<td th:text="${probesvalues.read_value}" />
-						<td th:text="${probesvalues.date}" />
-						<td th:text="${probesvalues.time}" />
+						<td th:text="${#dates.format(probesvalues.date, 'dd/MM/yyyy')}" />
+						<td th:text="${#dates.format(probesvalues.time, 'HH:mm')}" />
 					</tr>
 				</tbody>
 			</table>
