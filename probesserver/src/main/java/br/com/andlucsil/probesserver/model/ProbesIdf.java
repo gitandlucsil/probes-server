@@ -1,6 +1,5 @@
 package br.com.andlucsil.probesserver.model;
 
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,18 +8,18 @@ import javax.persistence.Id;
 public class ProbesIdf {
 	
 	@Id
-	private Long id;
+	private Long id_value;
 	private String description;
 	
 	public ProbesIdf() {
 	}
 
-	public Long getId() {
-		return id;
+	public Long getId_value() {
+		return id_value;
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.id_value = id;
 	}
 
 	public String getDescription() {

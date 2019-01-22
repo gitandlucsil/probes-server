@@ -5,6 +5,28 @@
 <title>Identificadores das sondas</title>
 </head>
 <body>
-Idf works!
+	<div class="row">
+		<div class="col-12 text-center">
+			<h1 class="mt-5">Lista de descrição de sensores</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Descrição</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="probesidf: ${dados}">
+						<td th:text="${probesidf.id_value}" />
+						<td th:text="${probesidf.description}" />
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 </body>
 </html>

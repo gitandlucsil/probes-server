@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Leitura das sondas</title>
+</head>
+<body>
+	<div class="row">
+		<div class="col-12 text-center">
+			<h1 class="mt-5">Lista de descrição de sensores</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Leitura</th>
+						<th>Data</th>
+						<th>Hora</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="probesvalues: ${reads}">
+						<td th:text="${probesvalues.id}" />
+						<td th:text="${probesvalues.read_value}" />
+						<td th:text="${probesvalues.date}" />
+						<td th:text="${probesvalues.time}" />
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+</html>
