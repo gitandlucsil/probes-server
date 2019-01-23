@@ -19,7 +19,7 @@ public interface ProbesValuesRepository extends JpaRepository <ProbesValues, Lon
 	List<ProbesValues> todasLeiturasSensor(String sensor);
 	
 	/*Recuperar a leitura media de um determinado sensor*/
-	@Query("select AVG(pv.read_value) from ProbesValues pv, ProbesIdf pidf\n" + 
+	@Query("select TRUNC(AVG(pv.read_value),2) from ProbesValues pv, ProbesIdf pidf\n" + 
 			"where pv.probesidf = pidf.id_value\n" + 
 			"and pidf.description = ?1")
 	Double leituraMediaSensor(String sensor);

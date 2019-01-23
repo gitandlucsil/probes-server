@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Leituras por data</title>
+</head>
+<body>
+<form th:action="@{/probesvalues/data/salvar}" method="post" >
+			<div class="row">
+				<div class="col-3 form-group">
+					<label for="dataLeitura">Data de Leituras:</label> <input
+						type="date" th:field="*{dataLeitura}" class="form-control">
+				</div>
+			</div>
+						<div class="row">
+				<div class="col-12 form-group">
+					<input type="submit" value="Salvar" class="btn btn-success">
+				</div>
+			</div>
+		</form>
+</body>
+</html>
