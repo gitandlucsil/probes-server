@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import org.springframework.data.annotation.Transient;
+
 @Entity
 public class ProbesValues {
 
@@ -14,7 +16,7 @@ public class ProbesValues {
 	private int read_value;
 	private Date date;
 	private Date time;
-	
+
 	public ProbesValues() {
 		
 	}

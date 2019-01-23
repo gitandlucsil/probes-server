@@ -11,6 +11,7 @@ import br.com.andlucsil.probesserver.model.ProbesValues;
 
 public interface ProbesValuesRepository extends JpaRepository <ProbesValues, Long>{
 
+
 	/*Recuperar todas as leituras de um determinado sensor*/
 	@Query("select pv from ProbesValues pv, ProbesIdf pidf\n" + 
 			"where pv.probesidf = pidf.id_value\n" + 
@@ -22,6 +23,18 @@ public interface ProbesValuesRepository extends JpaRepository <ProbesValues, Lon
 			"where pv.probesidf = pidf.id_value\n" + 
 			"and pidf.description = ?1")
 	Double leituraMediaSensor(String sensor);
+	
+	/*Recuperar a leitura maxima de um determinado sensor*/
+	@Query("select MAX(pv.read_value) from ProbesValues pv, ProbesIdf pidf\n" + 
+			"where pv.probesidf = pidf.id_value\n" + 
+			"and pidf.description = ?1")
+	Integer leituraMaximaSensor(String sensor);
+	
+	/*Recuperar a leitura minima de um determinado sensor*/
+	@Query("select MIN(pv.read_value) from ProbesValues pv, ProbesIdf pidf\n" + 
+			"where pv.probesidf = pidf.id_value\n" + 
+			"and pidf.description = ?1")
+	Integer leituraMinimaSensor(String sensor);
 	
 	/*Recupera as ultimas 5 leituras de um ultimo sensor*/
 	@Query("select pv from ProbesValues pv, ProbesIdf pidf\n" + 
