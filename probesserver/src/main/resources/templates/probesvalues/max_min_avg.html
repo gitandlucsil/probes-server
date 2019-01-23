@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Leitura média do sensor</title>
+</head>
+<body>
+	<div class="row">
+		<div class="col-12 text-center">
+			<h1 class="mt-5">Informação das leituras</h1>
+		</div>
+	</div>
+		</div>
+		<div class="row">
+		<div class="col-12">
+		Leitura minima: <p th:text="${min}"> </p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+		Leitura média: <p th:text="${avg}"> </p>
+		</div>
+	</div>
+		<div class="row">
+		<div class="col-12">
+		Leitura máxima: <p th:text="${max}"> </p>
+		</div>
+</body>
+</html>

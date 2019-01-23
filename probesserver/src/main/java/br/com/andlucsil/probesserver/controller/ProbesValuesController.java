@@ -24,6 +24,7 @@ public class ProbesValuesController {
 	//Retorna todas as leituras de todos os sensores
 	@GetMapping("/")
 	public String lista(Model model){
+		model.addAttribute("descriptions",probesidfrepository.findAll());
 		model.addAttribute("reads",probesvaluesrepository.findAll());
 		return "probesvalues/lista"; //arquivo .html dentro da pasta resources/templates
 	}
@@ -36,25 +37,14 @@ public class ProbesValuesController {
 	}
 	
 	//Retorna o valor médio da leitura de um sensor
-	@GetMapping("/{sensor}/avg")
-	public String visualizarMedia(@PathVariable String sensor, Model model){
-		model.addAttribute("avg", probesvaluesrepository.leituraMediaSensor(sensor));
-		return "probesvalues/avg";
-	}
-	
-	//Retorna o valor maximo da leitura de um sensor
-	@GetMapping("/{sensor}/max")
-	public String visualizarMaximo(@PathVariable String sensor, Model model){
+	@GetMapping("/{sensor}/infos")
+	public String visualizarMaxMinMedia(@PathVariable String sensor, Model model){
 		model.addAttribute("max", probesvaluesrepository.leituraMaximaSensor(sensor));
-		return "probesvalues/max";
+		model.addAttribute("avg", probesvaluesrepository.leituraMediaSensor(sensor));
+		model.addAttribute("min", probesvaluesrepository.leituraMinimaSensor(sensor));
+		return "probesvalues/max_min_avg";
 	}
 	
-	//Retorna o valor minimo da leitura de um sensor
-	@GetMapping("/{sensor}/min")
-	public String visualizarMinimo(@PathVariable String sensor, Model model){
-		model.addAttribute("min", probesvaluesrepository.leituraMinimaSensor(sensor));
-		return "probesvalues/min";
-	}
 	
 	//Retorna as ultimas 5 leituras
 	@GetMapping("/{sensor}/lastfives")
