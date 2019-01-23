@@ -35,7 +35,7 @@ public class ProbesValuesController {
 	@GetMapping("/{sensor}")
 	public String visualizarSensor(@PathVariable String sensor, Model model){
 		model.addAttribute("reads", probesvaluesrepository.todasLeiturasSensor(sensor));
-		return "probesvalues/lista";
+		return "probesvalues/lista_individual";
 	}
 	
 	//Retorna o valor médio da leitura de um sensor
@@ -50,6 +50,6 @@ public class ProbesValuesController {
 	public String visualizarUltimasCinco(@PathVariable String sensor, Model model){
 		Pageable cincoUltimos = PageRequest.of(0, 5);
 		model.addAttribute("reads", probesvaluesrepository.ultimasCincoLeituras(sensor, cincoUltimos));
-		return "probesvalues/lista";
+		return "probesvalues/lista_individual";
 	}
 }
