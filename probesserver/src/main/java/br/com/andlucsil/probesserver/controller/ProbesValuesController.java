@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import br.com.andlucsil.probesserver.repository.ProbesIdfRepository;
 import br.com.andlucsil.probesserver.repository.ProbesValuesRepository;
-import br.edu.utfpr.escola.model.Aluno;
 
 @Controller
 @RequestMapping("/probesvalues")
