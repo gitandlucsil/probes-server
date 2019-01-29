@@ -1,5 +1,7 @@
 package br.com.andlucsil.probesserver.model;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +17,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "alarm_register")
-public class AlarmRegister {
+public class AlarmRegister implements Serializable{
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -41,5 +43,11 @@ public class AlarmRegister {
 	public void setAlarm(Alarms alarm) {
 		this.alarm = alarm;
 	}
-    
+	public ProbesValues getProbesvalues() {
+		return probesvalues;
+	}
+	public void setProbesvalues(ProbesValues probesvalues) {
+		this.probesvalues = probesvalues;
+	}
+	
 }

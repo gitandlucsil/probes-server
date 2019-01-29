@@ -64,13 +64,12 @@ public class ProbesIdf implements Serializable {
         this.probesvalues = probesvalues;
     }
 
-	/*public List<Alarms> getAlarms() {
+	public List<Alarms> getAlarms() {
 		return alarms;
 	}
 
 	public void setAlarms(List<Alarms> alarms) {
 		this.alarms = alarms;
-	}*/
+	}
 	
-
 }

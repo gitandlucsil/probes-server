@@ -50,12 +50,6 @@ public class ProbesValues implements Serializable {
         this.read_time = new Date(System.currentTimeMillis());
     }
 
-    /*public int getId_value() {
-        return id_value;
-    }
-    public void setId_value(int id_value) {
-        this.id_value = id_value;
-    }*/
     public int getRead_value() {
         return read_value;
     }
@@ -95,51 +89,5 @@ public class ProbesValues implements Serializable {
     public void setProbesidf(ProbesIdf probesidf) {
         this.probesidf = probesidf;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 59 * hash + Objects.hashCode(this.id);
-        hash = 59 * hash + Objects.hashCode(this.probesidf);
-        hash = 59 * hash + this.read_value;
-        hash = 59 * hash + Objects.hashCode(this.read_date);
-        hash = 59 * hash + Objects.hashCode(this.read_time);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final ProbesValues other = (ProbesValues) obj;
-        if (this.read_value != other.read_value) {
-            return false;
-        }
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        if (!Objects.equals(this.probesidf, other.probesidf)) {
-            return false;
-        }
-        if (!Objects.equals(this.read_date, other.read_date)) {
-            return false;
-        }
-        if (!Objects.equals(this.read_time, other.read_time)) {
-            return false;
-        }
-        return true;
-    }
-
-    
-    
-
-
-    
+ 
 }
