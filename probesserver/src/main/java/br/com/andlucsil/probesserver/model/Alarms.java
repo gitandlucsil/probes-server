@@ -47,6 +47,13 @@ public class Alarms implements Serializable{
 		this.description = description;
 	}
 
+	public int getValue() {
+		return value;
+	}
+	public void setValue(int value) {
+		this.value = value;
+	}
+	
 	public List<AlarmRegister> getAlarm() {
 		return alarm;
 	}
