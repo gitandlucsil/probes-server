@@ -25,6 +25,8 @@ public class Alarms implements Serializable{
     private Long id;
     @Column(name = "description", nullable = false)
     private String description;
+    @Column (name = "value", nullable = false)
+    private int value;
     @OneToMany(cascade = CascadeType.PERSIST,mappedBy = "alarm")
     private List<AlarmRegister> alarm;
     @ManyToOne(cascade = CascadeType.PERSIST)
