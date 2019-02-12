@@ -30,8 +30,7 @@ public class Alarms implements Serializable{
     private int value;
     @OneToMany(cascade = CascadeType.PERSIST,mappedBy = "alarm")
     private List<AlarmRegister> alarm;
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinColumn(name = "probesidf")
+    @ManyToOne(fetch = FetchType.LAZY)
     private ProbesIdf probesidf;
     
     

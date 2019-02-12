@@ -41,6 +41,8 @@ public class AlarmsController {
 	
 	@PostMapping("/salvar")
 	public String salvar(@Valid Alarms alarm, BindingResult erros){
+		System.out.println(alarm.getValue());
+		System.out.println(alarm.getDescription());
 		alarmRepository.save(alarm);
 		return "redirect:/alarms/";
 	}
