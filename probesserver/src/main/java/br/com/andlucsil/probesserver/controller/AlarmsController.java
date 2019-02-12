@@ -43,7 +43,7 @@ public class AlarmsController {
 		System.out.println(alarm.getValue());
 		System.out.println(alarm.getDescription());
 		System.out.println(alarm.isType());
-		//System.out.println(alarm.getProbesidf().getDescription());
+		System.out.println(alarm.getProbesidf().getDescription());
 		alarmRepository.save(alarm);
 		return "redirect:/alarms/";
 	}
