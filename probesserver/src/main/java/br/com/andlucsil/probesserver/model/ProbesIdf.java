@@ -29,8 +29,8 @@ public class ProbesIdf implements Serializable {
     private String description;
     @OneToMany(cascade = CascadeType.PERSIST,mappedBy = "probesidf")
     private List<ProbesValues> probesvalues;
-    @OneToMany(cascade = CascadeType.PERSIST,mappedBy = "probesidf")
-    private List<Alarms> alarms;
+    /*@OneToMany(cascade = CascadeType.PERSIST,mappedBy = "probesidf")
+    private List<Alarms> alarms;*/
 
     public ProbesIdf() {
     }
@@ -64,12 +64,12 @@ public class ProbesIdf implements Serializable {
         this.probesvalues = probesvalues;
     }
 
-	public List<Alarms> getAlarms() {
+	/*public List<Alarms> getAlarms() {
 		return alarms;
 	}
 
 	public void setAlarms(List<Alarms> alarms) {
 		this.alarms = alarms;
-	}
+	}*/
 	
 }

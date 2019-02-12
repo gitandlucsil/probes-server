@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Cadastro de alarmes</title>
+</head>
+<body>
+	<div class="container">
+		<form th:action="@{/alarms/salvar}" method="post" th:object="${alarm}">
+			<div class="row mt-5">
+				<div class="col-12 form-group">
+					<input type="hidden" th:field="*{id}"> <label
+						for="description">Descrição:</label> <input type="text"
+						class="form-control" th:field="*{description}">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-3 form-group">
+					<label for="value">Valor:</label> <input type="number"
+						th:field="*{value}" class="form-control">
+				</div>
+			</div>
+
+			<label for="probesidf">Sensor:</label> <select th:field="*{probesidf}">
+				<option th:each="probe: ${probes}" th:text="${probe.description}"
+					th:value="${probe.id_value}"></option>
+			</select>
+
+			<div class="row">
+				<div class="col-12 form-group">
+					<input type="submit" value="Salvar" class="btn btn-success">
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
