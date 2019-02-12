@@ -33,7 +33,7 @@
 							th:text="${alarm.id}"></a></td>
 						<td th:text="${alarm.description}" />
 						<td th:text="${alarm.value}" />
-						<!--  <td th:text="${alarm.probesidf.id_value}" />-->
+						<td th:text="${alarm.probesidf.id_value}" />
 						<td><a th:href="@{/alarms/remover/{id}(id=${alarm.id})}">
 								Excluir</a></td>
 					</tr>

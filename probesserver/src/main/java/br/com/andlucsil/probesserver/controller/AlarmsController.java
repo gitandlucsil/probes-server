@@ -28,7 +28,6 @@ public class AlarmsController {
 	public String lista(Model model){
 		//${dados} será a variável disponível no template thymeleaf
 		model.addAttribute("dados",alarmRepository.findAll());
-		model.addAttribute("probes",probesidfRepository.findAll());
 		return "alarms/lista"; //arquivo .html dentro da pasta resources/templates
 	}
 	
@@ -43,6 +42,8 @@ public class AlarmsController {
 	public String salvar(@Valid Alarms alarm, BindingResult erros){
 		System.out.println(alarm.getValue());
 		System.out.println(alarm.getDescription());
+		System.out.println(alarm.isType());
+		//System.out.println(alarm.getProbesidf().getDescription());
 		alarmRepository.save(alarm);
 		return "redirect:/alarms/";
 	}

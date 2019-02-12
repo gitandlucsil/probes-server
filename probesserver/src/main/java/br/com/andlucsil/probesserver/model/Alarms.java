@@ -28,9 +28,9 @@ public class Alarms implements Serializable{
     private String description;
     @Column (name = "value", nullable = false)
     private int value;
-    @OneToMany(cascade = CascadeType.PERSIST,mappedBy = "alarm")
-    private List<AlarmRegister> alarm;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Column (name = "type", nullable = false)
+    private boolean type; 
+    @ManyToOne(fetch = FetchType.EAGER)
     private ProbesIdf probesidf;
     
     
@@ -54,12 +54,13 @@ public class Alarms implements Serializable{
 		this.value = value;
 	}
 	
-	public List<AlarmRegister> getAlarm() {
-		return alarm;
+	public boolean isType() {
+		return type;
 	}
-	public void setAlarm(List<AlarmRegister> alarm) {
-		this.alarm = alarm;
+	public void setType(boolean type) {
+		this.type = type;
 	}
+	
 	public ProbesIdf getProbesidf() {
 		return probesidf;
 	}

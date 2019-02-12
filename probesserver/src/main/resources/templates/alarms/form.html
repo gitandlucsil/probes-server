@@ -19,9 +19,13 @@
 					<label for="value">Valor:</label> <input type="number"
 						th:field="*{value}" class="form-control">
 				</div>
+
+				<input type="radio" th:name="type" value="1" th:checked="*{type}"> Maior
+				<input type="radio" th:name="type" value="0" th:checked="*{type} == false"> Menor
 			</div>
 
-			<label for="probesidf">Sensor:</label> <select th:field="*{probesidf}">
+			<label for="probesidf">Sensor:</label> <select
+				th:field="*{probesidf}">
 				<option th:each="probe: ${probes}" th:text="${probe.description}"
 					th:value="${probe.id_value}"></option>
 			</select>
