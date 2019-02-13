@@ -46,6 +46,8 @@ public class ProbesValues implements Serializable {
     @Column(name = "read_time", nullable = false)
     @Temporal(TemporalType.TIME)
     private Date read_time;
+    @OneToOne(mappedBy = "probesvalues", cascade = CascadeType.ALL,fetch = FetchType.LAZY, optional = false)
+    private AlarmRegister alarm;
 
     public ProbesValues() {
         this.read_date = new Date(System.currentTimeMillis());
@@ -91,7 +93,13 @@ public class ProbesValues implements Serializable {
     public void setProbesidf(ProbesIdf probesidf) {
         this.probesidf = probesidf;
     }
-    
-    
  
+    public AlarmRegister getAlarm(){
+        return alarm;
+    }
+    
+    public void setAlarm(AlarmRegister alarm){
+        this.alarm = alarm;
+    }
+    
 }

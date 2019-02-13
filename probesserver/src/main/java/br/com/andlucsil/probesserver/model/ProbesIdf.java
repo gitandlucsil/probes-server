@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 /**
  *
  * @author andre
@@ -26,6 +27,10 @@ public class ProbesIdf implements Serializable {
     private Long id_value;
     @Column(name = "description", nullable = false)
     private String description;
+    @OneToMany(cascade = CascadeType.PERSIST,mappedBy = "probesidf")
+    private List<ProbesValues> probesvalues;
+    @OneToMany(cascade = CascadeType.PERSIST,mappedBy = "probesidf")
+    private List<Alarms> alarms;
 
     public ProbesIdf() {
     }
@@ -50,5 +55,21 @@ public class ProbesIdf implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public List<ProbesValues> getProbesvalues() {
+        return probesvalues;
+    }
+
+    public void setProbesvalues(List<ProbesValues> probesvalues) {
+        this.probesvalues = probesvalues;
+    }
+
+	public List<Alarms> getAlarms() {
+		return alarms;
+	}
+
+	public void setAlarms(List<Alarms> alarms) {
+		this.alarms = alarms;
+	}
 	
 }

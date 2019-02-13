@@ -28,7 +28,7 @@ public class AlarmRegister implements Serializable{
     @JoinColumn(name = "alarm")
     private Alarms alarm;
     @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
+    @JoinColumn(name = "probes_values_id")
     private ProbesValues probesvalues;
     
 	public Long getId() {

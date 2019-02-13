@@ -6,7 +6,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,7 +29,10 @@ public class Alarms implements Serializable{
     private int value;
     @Column (name = "type", nullable = false)
     private boolean type; 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.PERSIST,mappedBy = "alarm")
+    private List<AlarmRegister> alarm;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "probesidf")
     private ProbesIdf probesidf;
     
     
@@ -46,21 +48,28 @@ public class Alarms implements Serializable{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	public int getValue() {
+        
+        public int getValue() {
 		return value;
 	}
 	public void setValue(int value) {
 		this.value = value;
 	}
-	
-	public boolean isType() {
+
+        public boolean isType() {
 		return type;
 	}
 	public void setType(boolean type) {
 		this.type = type;
 	}
-	
+
+        
+	public List<AlarmRegister> getAlarm() {
+		return alarm;
+	}
+	public void setAlarm(List<AlarmRegister> alarm) {
+		this.alarm = alarm;
+	}
 	public ProbesIdf getProbesidf() {
 		return probesidf;
 	}
