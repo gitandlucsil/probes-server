@@ -26,7 +26,6 @@ public class ProbesValuesController {
 	//Retorna todas as leituras de todos os sensores
 	@GetMapping("/")
 	public String lista(Model model){
-		model.addAttribute("descriptions",probesidfrepository.findAll());
 		model.addAttribute("reads",probesvaluesrepository.findAll());
 		return "probesvalues/lista"; //arquivo .html dentro da pasta resources/templates
 	}
@@ -62,8 +61,4 @@ public class ProbesValuesController {
 		return "probesvalues/data";
 	}
 	
-	@PostMapping("/salvar")
-	public String pesquisar(Date data){
-		return "redirect:/aluno/";
-	}
 }

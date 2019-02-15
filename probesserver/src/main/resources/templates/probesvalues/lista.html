@@ -15,15 +15,17 @@
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th>Data</th>
-						<th>Hora</th>
-						<th th:each="probesidfs: ${descriptions}" th:text="${probesidfs.description}"/>
+					    <th>Data</th>
+						<th>Hora</th> 
+						<th>Sensor</th>
+						<th>Valor<th/>
 					</tr>
 				</thead>
 				<tbody>
 					<tr th:each="probesvalues: ${reads}">
-						<td th:text="${#dates.format(probesvalues.date, 'dd/MM/yyyy')}" />
-						<td th:text="${#dates.format(probesvalues.time, 'HH:mm')}" />
+						<td th:text="${#dates.format(probesvalues.read_date, 'dd/MM/yyyy')}" />
+						<td th:text="${#dates.format(probesvalues.read_time, 'HH:mm')}" />
+						<td th:text="${probesvalues.probesidf.description}" />
 						<td th:text="${probesvalues.read_value}" />
 					</tr>
 				</tbody>

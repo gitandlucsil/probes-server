@@ -16,18 +16,18 @@
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th>Id</th>
-						<th>Leitura</th>
-						<th>Data</th>
-						<th>Hora</th>
+					    <th>Data</th>
+						<th>Hora</th> 
+						<th>Sensor</th>
+						<th>Valor<th/>
 					</tr>
 				</thead>
 				<tbody>
 					<tr th:each="probesvalues: ${reads}">
-						<td th:text="${probesvalues.id}" />
+						<td th:text="${#dates.format(probesvalues.read_date, 'dd/MM/yyyy')}" />
+						<td th:text="${#dates.format(probesvalues.read_time, 'HH:mm')}" />
+						<td th:text="${probesvalues.probesidf.description}" />
 						<td th:text="${probesvalues.read_value}" />
-						<td th:text="${#dates.format(probesvalues.date, 'dd/MM/yyyy')}" />
-						<td th:text="${#dates.format(probesvalues.time, 'HH:mm')}" />
 					</tr>
 				</tbody>
 			</table>
