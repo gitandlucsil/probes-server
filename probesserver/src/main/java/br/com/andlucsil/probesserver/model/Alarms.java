@@ -35,6 +35,8 @@ public class Alarms implements Serializable{
     @JoinColumn(name = "probesidf")
     private ProbesIdf probesidf;
     
+    public Alarms() {
+    }
     
 	public Long getId() {
 		return id;

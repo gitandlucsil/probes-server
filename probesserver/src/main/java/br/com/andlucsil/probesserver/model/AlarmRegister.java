@@ -31,6 +31,14 @@ public class AlarmRegister implements Serializable{
     @JoinColumn(name = "probes_values_id")
     private ProbesValues probesvalues;
     
+    public AlarmRegister(){
+    }
+    
+    public AlarmRegister(Alarms alarm, ProbesValues probesvalues) {
+        this.alarm = alarm;
+        this.probesvalues = probesvalues;
+    }
+    
 	public Long getId() {
 		return id;
 	}
