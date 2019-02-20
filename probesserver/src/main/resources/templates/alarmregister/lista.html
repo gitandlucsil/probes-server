@@ -1,1 +1,39 @@
-alarmregister works!
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Histórico de alarmes</title>
+</head>
+<body>
+	<div class="row">
+		<div class="col-12 text-center">
+			<h1 class="mt-5">Lista de alarmes</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Data</th>
+						<th>Hora</th>
+						<th>Sensor</th>
+						<th>Leitura<th />
+						<th>Alarme<th />
+					</tr>
+				</thead>
+				<tbody>
+
+					<tr th:each="alarm: ${dados}">
+						<td th:text="${#dates.format(alarm.probesvalues.read_date, 'dd/MM/yyyy')}" />
+						<td th:text="${#dates.format(alarm.probesvalues.read_time, 'HH:mm')}" />
+						<td th:text="${alarm.probesvalues.probesidf.description}" />
+						<td th:text="${alarm.probesvalues.read_value}" />
+						<td th:text="${alarm.alarm.description}"/>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+</html>
