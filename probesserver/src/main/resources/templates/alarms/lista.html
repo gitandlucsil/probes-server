@@ -23,6 +23,7 @@
 						<th>Id</th>
 						<th>Descrição</th>
 						<th>Tipo</th>
+						<th>Ativo</th>
 						<th>Valor</th>
 						<th>Sensor</th>
 						<th>Excluir</th>
@@ -34,6 +35,7 @@
 							th:text="${alarm.id}"></a></td>
 						<td th:text="${alarm.description}" />
 						<td th:text="${alarm.type} ? 'Maior' : 'Menor'" />
+						<td th:text="${alarm.active} ? 'Sim' : 'Não'" />
 						<td th:text="${alarm.value}" />
 						<td th:text="${alarm.probesidf.description}" />
 						<td><a th:href="@{/alarms/remover/{id}(id=${alarm.id})}">
