@@ -14,6 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  *
  * @author andre
@@ -28,8 +31,10 @@ public class ProbesIdf implements Serializable {
     @Column(name = "description", nullable = false)
     private String description;
     @OneToMany(cascade = CascadeType.PERSIST,mappedBy = "probesidf")
+    @JsonBackReference
     private List<ProbesValues> probesvalues;
     @OneToMany(cascade = CascadeType.PERSIST,mappedBy = "probesidf")
+    @JsonBackReference
     private List<Alarms> alarms;
 
     public ProbesIdf() {

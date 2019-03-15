@@ -7,7 +7,6 @@ package br.com.andlucsil.probesserver.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +20,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
  *
@@ -37,6 +38,7 @@ public class ProbesValues implements Serializable {
     private Long id;
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "probesidf")
+    @JsonBackReference
     private ProbesIdf probesidf;
     @Column(name = "read_value", nullable = false)
     private int read_value;
@@ -47,6 +49,7 @@ public class ProbesValues implements Serializable {
     @Temporal(TemporalType.TIME)
     private Date read_time;
     @OneToOne(mappedBy = "probesvalues", cascade = CascadeType.ALL,fetch = FetchType.LAZY, optional = false)
+    @JsonBackReference
     private AlarmRegister alarm;
 
     public ProbesValues() {
