@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.andlucsil.probesserver.model.AlarmRegister;
 import br.com.andlucsil.probesserver.model.Alarms;
+import br.com.andlucsil.probesserver.model.ProbesValues;
 import br.com.andlucsil.probesserver.repository.AlarmRegisterRepository;
 
 @RestController
@@ -26,8 +27,14 @@ public class AlarmRegisterRestController {
 		return alarmRegisterRepository.findAll();
 	}
 	
-	@GetMapping("/{id}")
+	/*@GetMapping("/{id}")
 	public AlarmRegister visualizar(@PathVariable(value = "id") Long id) {
 		return alarmRegisterRepository.findById(id).orElse(new AlarmRegister());
+	}*/
+	
+	//Retorna todos os alarmes de um determinado sensor
+	@GetMapping("/{sensor}")
+	public List<AlarmRegister> visualizarSensor(@PathVariable String sensor){
+		return alarmRegisterRepository.todosAlarmesSensor(sensor);
 	}
 }
