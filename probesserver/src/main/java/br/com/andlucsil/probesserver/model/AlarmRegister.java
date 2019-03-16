@@ -34,7 +34,7 @@ public class AlarmRegister implements Serializable{
     private Alarms alarm;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "probes_values_id")
-    @JsonIgnore
+    @JsonBackReference
     private ProbesValues probesvalues;
     
     public AlarmRegister(){
