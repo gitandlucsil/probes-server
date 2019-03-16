@@ -21,7 +21,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  *
@@ -38,7 +39,7 @@ public class ProbesValues implements Serializable {
     private Long id;
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "probesidf")
-    @JsonBackReference
+    @JsonManagedReference
     private ProbesIdf probesidf;
     @Column(name = "read_value", nullable = false)
     private int read_value;
@@ -49,7 +50,7 @@ public class ProbesValues implements Serializable {
     @Temporal(TemporalType.TIME)
     private Date read_time;
     @OneToOne(mappedBy = "probesvalues", cascade = CascadeType.ALL,fetch = FetchType.LAZY, optional = false)
-    @JsonBackReference
+    @JsonManagedReference
     private AlarmRegister alarm;
 
     public ProbesValues() {

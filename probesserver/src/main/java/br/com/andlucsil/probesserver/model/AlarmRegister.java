@@ -16,6 +16,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "alarm_register")
@@ -28,11 +30,11 @@ public class AlarmRegister implements Serializable{
     private Long id;
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "alarm")
-    @JsonBackReference
+    @JsonManagedReference
     private Alarms alarm;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "probes_values_id")
-    @JsonBackReference
+    @JsonIgnore
     private ProbesValues probesvalues;
     
     public AlarmRegister(){

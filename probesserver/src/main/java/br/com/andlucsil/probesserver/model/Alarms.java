@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "alarms")
@@ -38,7 +39,7 @@ public class Alarms implements Serializable{
     private List<AlarmRegister> alarm;
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "probesidf")
-    @JsonBackReference
+    @JsonManagedReference
     private ProbesIdf probesidf;
     
     public Alarms() {
