@@ -1,46 +1,29 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.andlucsil.probesserver.model;
 
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-/**
- *
- * @author andre
- */
 @Entity
-@Table(name = "probes_values")
-public class ProbesValues implements Serializable {
+@Table(name = "probe_value")
+public class ProbeValue implements Serializable{
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "probesidf")
-    @JsonManagedReference
-    private ProbesIdf probesidf;
     @Column(name = "read_value", nullable = false)
     private int read_value;
     @Column(name = "read_date", nullable = false)
@@ -49,11 +32,11 @@ public class ProbesValues implements Serializable {
     @Column(name = "read_time", nullable = false)
     @Temporal(TemporalType.TIME)
     private Date read_time;
-    @OneToOne(mappedBy = "probesvalues", cascade = CascadeType.ALL,fetch = FetchType.LAZY, optional = false)
-    @JsonManagedReference
-    private AlarmRegister alarm;
-
-    public ProbesValues() {
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "probedescription")
+    private ProbeDescription probedescription;
+    
+    public ProbeValue() {
         this.read_date = new Date(System.currentTimeMillis());
         this.read_time = new Date(System.currentTimeMillis());
     }
@@ -90,20 +73,12 @@ public class ProbesValues implements Serializable {
         this.read_time = read_time;
     }
 
-    public ProbesIdf getProbesidf() {
-        return probesidf;
-    }
+	public ProbeDescription getProbedescription() {
+		return probedescription;
+	}
 
-    public void setProbesidf(ProbesIdf probesidf) {
-        this.probesidf = probesidf;
-    }
- 
-    public AlarmRegister getAlarm(){
-        return alarm;
-    }
-    
-    public void setAlarm(AlarmRegister alarm){
-        this.alarm = alarm;
-    }
+	public void setProbedescription(ProbeDescription probedescription) {
+		this.probedescription = probedescription;
+	}
     
 }

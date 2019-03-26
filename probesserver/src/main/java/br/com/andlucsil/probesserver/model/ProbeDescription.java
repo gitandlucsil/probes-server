@@ -17,30 +17,26 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-/**
- *
- * @author andre
- */
 @Entity
-@Table(name = "probes_idf")
-public class ProbesIdf implements Serializable {
+@Table(name = "probe_description")
+public class ProbeDescription implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     private Long id_value;
     @Column(name = "description", nullable = false)
     private String description;
-    @OneToMany(cascade = CascadeType.PERSIST,mappedBy = "probesidf")
+    @OneToMany(cascade = CascadeType.PERSIST,mappedBy = "probedescription")
     @JsonBackReference
-    private List<ProbesValues> probesvalues;
-    @OneToMany(cascade = CascadeType.PERSIST,mappedBy = "probesidf")
+    private List<ProbeValue> probevalues;
+    /*@OneToMany(cascade = CascadeType.PERSIST,mappedBy = "probesidf")
     @JsonBackReference
-    private List<Alarms> alarms;
+    private List<Alarms> alarms;*/
 
-    public ProbesIdf() {
+    public ProbeDescription() {
     }
 
-    public ProbesIdf(Long id_value, String description) {
+    public ProbeDescription(Long id_value, String description) {
         this.id_value = id_value;
         this.description = description;
     }
@@ -61,20 +57,20 @@ public class ProbesIdf implements Serializable {
         this.description = description;
     }
 
-    public List<ProbesValues> getProbesvalues() {
-        return probesvalues;
+    public List<ProbeValue> getProbevalues() {
+        return probevalues;
     }
 
-    public void setProbesvalues(List<ProbesValues> probesvalues) {
-        this.probesvalues = probesvalues;
+    public void setProbevalues(List<ProbeValue> probevalues) {
+        this.probevalues = probevalues;
     }
 
-	public List<Alarms> getAlarms() {
+	/*public List<Alarms> getAlarms() {
 		return alarms;
 	}
 
 	public void setAlarms(List<Alarms> alarms) {
 		this.alarms = alarms;
-	}
+	}*/
 	
 }
