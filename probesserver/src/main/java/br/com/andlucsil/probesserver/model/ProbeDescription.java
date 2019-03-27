@@ -26,9 +26,6 @@ public class ProbeDescription implements Serializable {
     private Long id;
     @Column(name = "description", nullable = false)
     private String description;
-    /*@OneToMany(cascade = CascadeType.PERSIST,mappedBy = "probesidf")
-    @JsonBackReference
-    private List<Alarms> alarms;*/
 
     public ProbeDescription() {
     }
@@ -53,14 +50,5 @@ public class ProbeDescription implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-
-
-	/*public List<Alarms> getAlarms() {
-		return alarms;
-	}
-
-	public void setAlarms(List<Alarms> alarms) {
-		this.alarms = alarms;
-	}*/
 	
 }

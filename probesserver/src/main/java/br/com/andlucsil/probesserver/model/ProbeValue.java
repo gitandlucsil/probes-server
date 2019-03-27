@@ -38,7 +38,6 @@ public class ProbeValue implements Serializable{
     @Column(name = "read_time", nullable = false)
     @Temporal(TemporalType.TIME)
     private Date read_time;
-    //@ManyToOne(cascade = CascadeType.PERSIST)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "probedescription")
     @OnDelete(action = OnDeleteAction.CASCADE)
