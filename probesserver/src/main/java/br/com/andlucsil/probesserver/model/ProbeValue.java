@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +15,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "probe_value")
@@ -32,8 +38,11 @@ public class ProbeValue implements Serializable{
     @Column(name = "read_time", nullable = false)
     @Temporal(TemporalType.TIME)
     private Date read_time;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    //@ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "probedescription")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private ProbeDescription probedescription;
     
     public ProbeValue() {

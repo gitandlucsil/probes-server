@@ -26,9 +26,6 @@ public class ProbeDescription implements Serializable {
     private Long id_value;
     @Column(name = "description", nullable = false)
     private String description;
-    @OneToMany(cascade = CascadeType.PERSIST,mappedBy = "probedescription")
-    @JsonBackReference
-    private List<ProbeValue> probevalues;
     /*@OneToMany(cascade = CascadeType.PERSIST,mappedBy = "probesidf")
     @JsonBackReference
     private List<Alarms> alarms;*/
@@ -57,13 +54,6 @@ public class ProbeDescription implements Serializable {
         this.description = description;
     }
 
-    public List<ProbeValue> getProbevalues() {
-        return probevalues;
-    }
-
-    public void setProbevalues(List<ProbeValue> probevalues) {
-        this.probevalues = probevalues;
-    }
 
 	/*public List<Alarms> getAlarms() {
 		return alarms;

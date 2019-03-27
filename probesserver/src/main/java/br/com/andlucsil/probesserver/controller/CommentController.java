@@ -16,11 +16,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.andlucsil.probesserver.exception.ResourceNotFoundException;
 import br.com.andlucsil.probesserver.model.Comment;
 import br.com.andlucsil.probesserver.repository.CommentRepository;
 import br.com.andlucsil.probesserver.repository.PostRepository;
-
-import br.com.andlucsil.probesserver.model.ResourceNotFoundException;
 
 @RestController
 public class CommentController {

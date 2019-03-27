@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.andlucsil.probesserver.exception.ResourceNotFoundException;
 import br.com.andlucsil.probesserver.model.Post;
-import br.com.andlucsil.probesserver.model.ResourceNotFoundException;
 import br.com.andlucsil.probesserver.repository.PostRepository;
 
 @RestController
@@ -33,7 +33,7 @@ public class PostController {
 	}
 	
 	@GetMapping("/posts/{postId}")
-	public Post getPostt(@PathVariable Long postId) {
+	public Post getPost(@PathVariable Long postId) {
 		return postRepository.findById(postId).orElse(new Post());
 	}
 

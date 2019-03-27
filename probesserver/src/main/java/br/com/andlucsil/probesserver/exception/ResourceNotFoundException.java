@@ -1,4 +1,4 @@
-package br.com.andlucsil.probesserver.model;
+package br.com.andlucsil.probesserver.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
