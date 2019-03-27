@@ -23,7 +23,7 @@ public class ProbeDescription implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    private Long id_value;
+    private Long id;
     @Column(name = "description", nullable = false)
     private String description;
     /*@OneToMany(cascade = CascadeType.PERSIST,mappedBy = "probesidf")
@@ -33,17 +33,17 @@ public class ProbeDescription implements Serializable {
     public ProbeDescription() {
     }
 
-    public ProbeDescription(Long id_value, String description) {
-        this.id_value = id_value;
+    public ProbeDescription(Long id, String description) {
+        this.id = id;
         this.description = description;
     }
 
-    public Long getId_value() {
-        return id_value;
+    public Long getId() {
+        return id;
     }
 
-    public void setId_value(Long id_value) {
-        this.id_value = id_value;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDescription() {

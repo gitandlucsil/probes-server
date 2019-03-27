@@ -28,7 +28,7 @@ public class ProbeDescriptionController {
 	ProbeDescriptionRepository probedescriptionrepository;
 	
 	@GetMapping("/")
-	public List<ProbeDescription> getAll(Model model){
+	public List<ProbeDescription> getAll(){
 		return probedescriptionrepository.findAll();
 	}
 	
@@ -38,21 +38,21 @@ public class ProbeDescriptionController {
 	}
 	
 	@PostMapping("/")
-	public void savePostDescription(@Valid @RequestBody ProbeDescription probedescription){
-		probedescriptionrepository.save(probedescription);
+	public ProbeDescription savePostDescription(@Valid @RequestBody ProbeDescription probedescription){
+		return probedescriptionrepository.save(probedescription);
 	}
 	
 	@PutMapping("/{id}")
 	public @Valid ProbeDescription updatePostDescription(@PathVariable Long id, @Valid @RequestBody ProbeDescription probedescription){
 		return probedescriptionrepository.findById(id).map(probedesc -> {
-			probedesc.setId_value(probedescription.getId_value());
+			probedesc.setId(probedescription.getId());
 			probedesc.setDescription(probedescription.getDescription());
 			return probedescriptionrepository.save(probedescription);
 		}).orElseThrow(() -> new ResourceNotFoundException("ProbeDescriptionId " + id + " não encontrado"));
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deletePostDescription(@PathVariable Long id){
+	public ResponseEntity<?> deleteProbeDescription(@PathVariable Long id){
 		return probedescriptionrepository.findById(id).map(probedesc -> {
 			probedescriptionrepository.delete(probedesc);
 			return ResponseEntity.ok().build();
