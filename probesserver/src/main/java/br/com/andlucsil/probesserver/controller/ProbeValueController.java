@@ -5,6 +5,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -82,5 +84,12 @@ public class ProbeValueController {
 	@GetMapping("/probedesc/{probedescid}/min")
 	public Integer viewMinValue(@PathVariable (value = "probedescid") Long id) {
 		return probevaluerepository.minReadProbe(id);
+	}
+	
+	//Retorna as ultimas cinco leituras
+	@GetMapping("/probedesc/{probedescid}/lastfives")
+	public List<ProbeValue> getLastFiveReads(@PathVariable Long probedescid){
+		Pageable lastfives = PageRequest.of(0, 5);
+		return probevaluerepository.lastFiveReads(probedescid, lastfives);
 	}
 }
