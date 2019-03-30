@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.andlucsil.probesserver.exception.ResourceNotFoundException;
+import br.com.andlucsil.probesserver.model.ProbeDescription;
 import br.com.andlucsil.probesserver.model.ProbeValue;
 import br.com.andlucsil.probesserver.repository.ProbeDescriptionRepository;
 import br.com.andlucsil.probesserver.repository.ProbeValueRepository;
@@ -53,9 +54,12 @@ public class ProbeValueController {
 	public ProbeValue updateProbeValue(@PathVariable (value = "probedescid") Long desc_id, @PathVariable (value = "probevalueid") Long value_id, @Valid @RequestBody ProbeValue probevalue) {
 		if(!probedescriptionrepository.existsById(desc_id)) {
 			throw new ResourceNotFoundException("ProbeDescriptionId " + desc_id + " não encontrado");
+		} else {
+			probevalue.setProbedescription(probedescriptionrepository.findById(desc_id).orElse(new ProbeDescription()));
 		}
 		return probevaluerepository.findById(value_id).map(pvalue -> {
 			pvalue.setRead_value(probevalue.getRead_value());
+			pvalue.setProbedescription(probevalue.getProbedescription());
 			return probevaluerepository.save(pvalue);
 		}).orElseThrow(() -> new ResourceNotFoundException("ProbeId " + value_id + " não encontrado"));
 	}

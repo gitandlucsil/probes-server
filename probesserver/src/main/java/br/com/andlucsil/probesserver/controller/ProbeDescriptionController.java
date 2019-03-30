@@ -47,7 +47,7 @@ public class ProbeDescriptionController {
 		return probedescriptionrepository.findById(id).map(probedesc -> {
 			probedesc.setId(probedescription.getId());
 			probedesc.setDescription(probedescription.getDescription());
-			return probedescriptionrepository.save(probedescription);
+			return probedescriptionrepository.save(probedesc);
 		}).orElseThrow(() -> new ResourceNotFoundException("ProbeDescriptionId " + id + " não encontrado"));
 	}
 	
