@@ -6,5 +6,4 @@ import br.com.andlucsil.probesserver.model.ProbeDescription;
 
 public interface ProbeDescriptionRepository extends JpaRepository <ProbeDescription, Long>{
 
-
 }

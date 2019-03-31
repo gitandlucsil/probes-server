@@ -39,16 +39,17 @@ public class ProbeValueController {
 	@Autowired
 	AlarmRegisterRepository alarmregisterrepository;
 	
+	/*Retorna as leituras de todos os sensores*/
 	@GetMapping("/probevalue")
 	public List<ProbeValue> getAllProbesValue(){
 		return probevaluerepository.findAll();
 	}
-	
+	/*Retorna as leituras de um determinado sensor*/
 	@GetMapping("/probedesc/{probedescid}/probevalue")
 	public List<ProbeValue> getAllProbesValuesByDescId(@PathVariable (value = "probedescid") Long id){
 		return probevaluerepository.findByProbedescriptionId(id);
 	}
-	
+	/*Insere uma leitura para um determinado sensor*/
 	@PostMapping("/probedesc/{probedescid}/probevalue")
 	public ProbeValue saveProbeValue(@PathVariable (value = "probedescid") Long id, @Valid @RequestBody ProbeValue probevalue){
 		return probedescriptionrepository.findById(id).map(probedesc -> {
@@ -56,7 +57,7 @@ public class ProbeValueController {
 			return setAlarmByRead(probevalue);
 		}).orElseThrow(() -> new ResourceNotFoundException("ProbeId " + id + " não encontrado"));
 	}
-	
+	/*Altera a leitura para um determinado sensor*/
 	@PutMapping("/probedesc/{probedescid}/probevalue/{probevalueid}")
 	public ProbeValue updateProbeValue(@PathVariable (value = "probedescid") Long desc_id, @PathVariable (value = "probevalueid") Long value_id, @Valid @RequestBody ProbeValue probevalue) {
 		if(!probedescriptionrepository.existsById(desc_id)) {
@@ -70,7 +71,7 @@ public class ProbeValueController {
 			return probevaluerepository.save(pvalue);
 		}).orElseThrow(() -> new ResourceNotFoundException("ProbeId " + value_id + " não encontrado"));
 	}
-	
+	/*Deleta a leitura para um determinado sensor*/
 	@DeleteMapping("/probevalue/{id}")
 	public ResponseEntity<?> deleteProbeValue(@PathVariable Long id){
 		return probevaluerepository.findById(id).map(probevalue -> {
@@ -78,38 +79,31 @@ public class ProbeValueController {
 			return ResponseEntity.ok().build();
 		}).orElseThrow(() -> new ResourceNotFoundException("ProbeId " + id + " não encontrado"));
 	}
-	
-	//Retorna o valor médio da leitura de um sensor
+	/*Retorna o valor médio da leitura de um sensor*/
 	@GetMapping("/probedesc/{probedescid}/avg")
 	public Double viewAvgValue(@PathVariable (value = "probedescid") Long id) {
 		return probevaluerepository.averageReadProbe(id);
 	}
-	
-	//Retorna o valor máximo da leitura de um sensor
+	/*Retorna o valor máximo da leitura de um sensor*/
 	@GetMapping("/probedesc/{probedescid}/max")
 	public Integer viewMaxValue(@PathVariable (value = "probedescid") Long id) {
 		return probevaluerepository.maxReadProbe(id);
 	}
-	
-	//Retorna o valor minimo da leitura de um sensor
+	/*Retorna o valor minimo da leitura de um sensor*/
 	@GetMapping("/probedesc/{probedescid}/min")
 	public Integer viewMinValue(@PathVariable (value = "probedescid") Long id) {
 		return probevaluerepository.minReadProbe(id);
 	}
-	
-	//Retorna as ultimas cinco leituras
+	/*Retorna as ultimas cinco leituras*/
 	@GetMapping("/probedesc/{probedescid}/lastfives")
 	public List<ProbeValue> getLastFiveReads(@PathVariable Long probedescid){
 		Pageable lastfives = PageRequest.of(0, 5);
 		return probevaluerepository.lastFiveReads(probedescid, lastfives);
 	}
-	
-	//Método para verificar se uma leitua gerou algum alarme, caso sim, inserir no alarmregister
+	/*Método para verificar se uma leitura gerou algum alarme, caso sim, inserir no alarmregister*/
 	public ProbeValue setAlarmByRead(ProbeValue probevalue) {
 		probevaluerepository.save(probevalue);
 		List<Alarm> alarms = alarmrepository.findAll();
-		//System.out.println(probevalue.getProbedescription().getId());
-		//System.out.println(probevalue.getProbedescription().getDescription());
 		for(Alarm a : alarms) {
 			if(a.getProbedescription().getId() == probevalue.getProbedescription().getId()) {
 				if(a.isType()) { //Se for marcado para ser um alarme de valor maior

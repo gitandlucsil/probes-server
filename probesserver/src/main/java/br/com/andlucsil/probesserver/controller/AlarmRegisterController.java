@@ -20,16 +20,17 @@ public class AlarmRegisterController {
 	@Autowired 
 	AlarmRegisterRepository alarmregisterrespository;
 
+	/*Retorna todos os registros de alarmes, retornando uma lista dos objetos que formam o registro*/
 	@GetMapping("/alarmregister")
 	public List<Object[]> getAllAlarmRegister(){
 		return alarmregisterrespository.allInfoRegisters();
 	}
-	
+	/*Retorna todos os registros de alarmes, retornando uma lista dos objetos que formam o registro*/
 	@GetMapping("alarmregister/{id}")
 	public List<Object[]> getAlarmRegister(@PathVariable (value = "id") Long id) {
 		return alarmregisterrespository.allInfoRegisterById(id);
 	}
-	
+	/*Retorna todos os registros de alarmes de um determinado sensor,retornando uma lista dos objetos que formam o registro */
 	@GetMapping("/probedesc/{probedescid}/alarm/register")
 	public List<Object[]> getAllAlarmRegisterByProbe(@PathVariable (value = "probedescid") Long id){
 		return alarmregisterrespository.allInfoRegistersByProbe(id);

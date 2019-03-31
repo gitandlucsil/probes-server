@@ -16,7 +16,17 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+/*
+ * Modelo da classe Alarm
+ * id - Chave primaria de um alarme
+ * description - Descrição do alarme (Por exemplo, temperatura alta, umidade baixa)
+ * value - O valor inteiro para ser atribuido um alarme
+ * type - T:maior, F:menor, ou seja, se for maior, quando leitura >= value, gerara um registro de alarme,
+ *        se for menor, quando leitura <= value, gerara um registro de alarme
+ * active - T:alarme ativo, F:alarme desativo, ou seja, quando uma leitura gerar um alarme, marca true, caso
+ *          o contrario, marca false
+ * probedescription - Para qual sensor pertence o alarme  
+ * */
 @Entity
 @Table(name = "alarm")
 public class Alarm implements Serializable {

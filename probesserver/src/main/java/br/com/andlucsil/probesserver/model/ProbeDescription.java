@@ -16,7 +16,11 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+/*
+ * Modelo da classe ProbeDescription
+ * id - Chave primaria de um sensor
+ * description - A descrição do sensor, por exemplo, Temperatura1, Umidade2
+ * */
 @Entity
 @Table(name = "probe_description")
 public class ProbeDescription implements Serializable {

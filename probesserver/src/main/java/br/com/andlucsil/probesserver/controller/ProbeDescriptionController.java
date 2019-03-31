@@ -6,7 +6,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,21 +26,22 @@ public class ProbeDescriptionController {
 	@Autowired
 	ProbeDescriptionRepository probedescriptionrepository;
 	
+	/*Retorna a informação de todos os sensores*/
 	@GetMapping("/")
 	public List<ProbeDescription> getAll(){
 		return probedescriptionrepository.findAll();
 	}
-	
+	/*Retorna um sensor pelo seu id*/
 	@GetMapping("/{id}")
 	public ProbeDescription getProbeDescription(@PathVariable Long id) {
 		return probedescriptionrepository.findById(id).orElse(new ProbeDescription());
 	}
-	
+	/*Salva um sensor no banco*/
 	@PostMapping("/")
 	public ProbeDescription savePostDescription(@Valid @RequestBody ProbeDescription probedescription){
 		return probedescriptionrepository.save(probedescription);
 	}
-	
+	/*Altera as informacoes de um determinado sensor*/
 	@PutMapping("/{id}")
 	public @Valid ProbeDescription updatePostDescription(@PathVariable Long id, @Valid @RequestBody ProbeDescription probedescription){
 		return probedescriptionrepository.findById(id).map(probedesc -> {
@@ -50,7 +50,7 @@ public class ProbeDescriptionController {
 			return probedescriptionrepository.save(probedesc);
 		}).orElseThrow(() -> new ResourceNotFoundException("ProbeDescriptionId " + id + " não encontrado"));
 	}
-	
+	/*Exclui um determinado sensor*/
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteProbeDescription(@PathVariable Long id){
 		return probedescriptionrepository.findById(id).map(probedesc -> {

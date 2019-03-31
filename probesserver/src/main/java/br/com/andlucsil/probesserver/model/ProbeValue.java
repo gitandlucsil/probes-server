@@ -22,7 +22,14 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+/*
+ * Modelo da classe ProbeValue
+ * id - Chave primaria de uma leitura de sensor
+ * read_value - O valor inteiro de uma leitura de um sensor
+ * read_date - A data que ocorreu uma leitura, salvo automaticamente no banco ao ser instanciado o objeto
+ * read_time - O horario que ocorreu uma leitura, salvo automaticamente no banco ao ser instanciado o objeto
+ * probedescription - Para qual sensor pertence a leitura
+ * */
 @Entity
 @Table(name = "probe_value")
 public class ProbeValue implements Serializable{
