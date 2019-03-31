@@ -25,18 +25,18 @@ public class AlarmRegisterController {
 	ProbeDescriptionRepository probedescriptionrepository;
 
 	@GetMapping("/alarmregister")
-	public List<AlarmRegister> getAllAlarmRegister(){
-		return alarmregisterrespository.findAll();
+	public List<Object[]> getAllAlarmRegister(){
+		return alarmregisterrespository.allInfoRegisters();
 	}
 	
 	@GetMapping("alarmregister/{id}")
-	public AlarmRegister getAlarmRegister(@PathVariable (value = "id") Long id) {
-		return alarmregisterrespository.findById(id).orElse(new AlarmRegister());
+	public List<Object[]> getAlarmRegister(@PathVariable (value = "id") Long id) {
+		return alarmregisterrespository.allInfoRegisterById(id);
 	}
 	
 	@GetMapping("/probedesc/{probedescid}/alarm/register")
-	public List<AlarmRegister> getAllAlarmRegisterByProbe(@PathVariable (value = "probedescid") Long id){
-		return alarmregisterrespository.allAlarmsProbe(id);
+	public List<Object[]> getAllAlarmRegisterByProbe(@PathVariable (value = "probedescid") Long id){
+		return alarmregisterrespository.allInfoRegistersByProbe(id);
 	}
 	
 }

@@ -15,4 +15,22 @@ public interface AlarmRegisterRepository extends JpaRepository <AlarmRegister, L
 		   "and ar.probevalue = pv.id\n"+
 		   "and pdesc.id = ?1")
 	List<AlarmRegister> allAlarmsProbe(Long probedescid);
+	
+	@Query("select a, pv from AlarmRegister ar, Alarm a, ProbeValue pv\n"+
+		   "where ar.alarm = a.id\n"+
+		   "and ar.probevalue = pv.id")
+	List<Object[]> allInfoRegisters();
+	
+	@Query("select a, pv from AlarmRegister ar, Alarm a, ProbeValue pv, ProbeDescription pdesc\n"+
+			   "where ar.alarm = a.id\n"+
+			   "and ar.probevalue = pv.id\n"+
+			   "and pv.probedescription = pdesc.id\n"+
+			   "and pdesc.id = ?1")
+	List<Object[]> allInfoRegistersByProbe(Long probedescid);
+	
+	@Query("select a, pv from AlarmRegister ar, Alarm a, ProbeValue pv\n"+
+			   "where ar.alarm = a.id\n"+
+			   "and ar.probevalue = pv.id\n"+
+			   "and ar.id = ?1")
+	List<Object[]> allInfoRegisterById(Long id);
 }
