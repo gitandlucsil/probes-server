@@ -44,6 +44,11 @@ public class AlarmRegister implements Serializable{
     
 	public AlarmRegister() {
 	}
+	
+	public AlarmRegister(Alarm a, ProbeValue pv) {
+		this.alarm = a;
+		this.probevalue = pv;
+	}
 
 	public Long getId() {
 		return id;

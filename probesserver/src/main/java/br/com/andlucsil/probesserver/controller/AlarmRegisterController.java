@@ -19,10 +19,6 @@ public class AlarmRegisterController {
 	
 	@Autowired 
 	AlarmRegisterRepository alarmregisterrespository;
-	@Autowired
-	AlarmRepository alarmrepository;
-	@Autowired
-	ProbeDescriptionRepository probedescriptionrepository;
 
 	@GetMapping("/alarmregister")
 	public List<Object[]> getAllAlarmRegister(){

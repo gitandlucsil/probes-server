@@ -18,8 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.andlucsil.probesserver.exception.ResourceNotFoundException;
+import br.com.andlucsil.probesserver.model.Alarm;
+import br.com.andlucsil.probesserver.model.AlarmRegister;
 import br.com.andlucsil.probesserver.model.ProbeDescription;
 import br.com.andlucsil.probesserver.model.ProbeValue;
+import br.com.andlucsil.probesserver.repository.AlarmRegisterRepository;
+import br.com.andlucsil.probesserver.repository.AlarmRepository;
 import br.com.andlucsil.probesserver.repository.ProbeDescriptionRepository;
 import br.com.andlucsil.probesserver.repository.ProbeValueRepository;
 
@@ -30,6 +34,10 @@ public class ProbeValueController {
 	ProbeValueRepository probevaluerepository;
 	@Autowired
 	ProbeDescriptionRepository probedescriptionrepository;
+	@Autowired
+	AlarmRepository alarmrepository;
+	@Autowired
+	AlarmRegisterRepository alarmregisterrepository;
 	
 	@GetMapping("/probevalue")
 	public List<ProbeValue> getAllProbesValue(){
@@ -45,7 +53,7 @@ public class ProbeValueController {
 	public ProbeValue saveProbeValue(@PathVariable (value = "probedescid") Long id, @Valid @RequestBody ProbeValue probevalue){
 		return probedescriptionrepository.findById(id).map(probedesc -> {
 			probevalue.setProbedescription(probedesc);
-			return probevaluerepository.save(probevalue);
+			return setAlarmByRead(probevalue);
 		}).orElseThrow(() -> new ResourceNotFoundException("ProbeId " + id + " não encontrado"));
 	}
 	
@@ -94,5 +102,39 @@ public class ProbeValueController {
 	public List<ProbeValue> getLastFiveReads(@PathVariable Long probedescid){
 		Pageable lastfives = PageRequest.of(0, 5);
 		return probevaluerepository.lastFiveReads(probedescid, lastfives);
+	}
+	
+	//Método para verificar se uma leitua gerou algum alarme, caso sim, inserir no alarmregister
+	public ProbeValue setAlarmByRead(ProbeValue probevalue) {
+		probevaluerepository.save(probevalue);
+		List<Alarm> alarms = alarmrepository.findAll();
+		//System.out.println(probevalue.getProbedescription().getId());
+		//System.out.println(probevalue.getProbedescription().getDescription());
+		for(Alarm a : alarms) {
+			if(a.getProbedescription().getId() == probevalue.getProbedescription().getId()) {
+				if(a.isType()) { //Se for marcado para ser um alarme de valor maior
+					if(probevalue.getRead_value() >= a.getValue()) { //Se a leitura do sensor for maior que o alarme
+						AlarmRegister ar = new AlarmRegister(a,probevalue);//Instancia o novo objeto de alarme register
+						alarmregisterrepository.save(ar); //Salva o alarm register
+						a.setActive(true); //Seta o alarme como ativo
+						alarmrepository.save(a); //Atualiza o estado do alarme
+					} else {
+						a.setActive(false); //Se a leitura do sensor for mmenor que o alarme, seta como desativo
+						alarmrepository.save(a);
+					}
+				} else { //Se for marcado para ser um alarme de valor menor
+					if(probevalue.getRead_value() <= a.getValue()) {//Se a leitura do sensor for menor que o alarme
+						AlarmRegister ar = new AlarmRegister(a,probevalue);//Instancia o novo objeto de alarme register
+						alarmregisterrepository.save(ar); //Salva o alarm register
+						a.setActive(true); //Seta o alarme como ativo
+						alarmrepository.save(a); //Atualiza o estado do alarme
+					} else {
+						a.setActive(false); //Se a leitura do sensor for mmenor que o alarme, seta como desativo
+						alarmrepository.save(a);
+					}
+				}
+			}
+		}
+		return probevalue;
 	}
 }
