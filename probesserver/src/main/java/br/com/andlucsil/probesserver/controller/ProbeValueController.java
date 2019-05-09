@@ -109,16 +109,18 @@ public class ProbeValueController {
 				if(a.isType()) { //Se for marcado para ser um alarme de valor maior
 					if(probevalue.getRead_value() >= a.getValue()) { //Se a leitura do sensor for maior que o alarme
 						AlarmRegister ar = new AlarmRegister(a,probevalue);//Instancia o novo objeto de alarme register
+						ar.setAlarm_value(a.getValue()); //Seta o valor do alarme para registro, com o valor do alarme atual
 						alarmregisterrepository.save(ar); //Salva o alarm register
 						a.setActive(true); //Seta o alarme como ativo
 						alarmrepository.save(a); //Atualiza o estado do alarme
 					} else {
-						a.setActive(false); //Se a leitura do sensor for mmenor que o alarme, seta como desativo
+						a.setActive(false); //Se a leitura do sensor for menor que o alarme, seta como desativo
 						alarmrepository.save(a);
 					}
 				} else { //Se for marcado para ser um alarme de valor menor
 					if(probevalue.getRead_value() <= a.getValue()) {//Se a leitura do sensor for menor que o alarme
 						AlarmRegister ar = new AlarmRegister(a,probevalue);//Instancia o novo objeto de alarme register
+						ar.setAlarm_value(a.getValue()); //Seta o valor do alarme para registro, com o valor do alarme atual
 						alarmregisterrepository.save(ar); //Salva o alarm register
 						a.setActive(true); //Seta o alarme como ativo
 						alarmrepository.save(a); //Atualiza o estado do alarme

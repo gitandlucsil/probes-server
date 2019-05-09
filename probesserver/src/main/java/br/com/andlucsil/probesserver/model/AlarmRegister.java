@@ -42,6 +42,8 @@ public class AlarmRegister implements Serializable{
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private ProbeValue probevalue;
+    @Column(name = "alarm_value")
+    private int alarm_value;
     
 	public AlarmRegister() {
 	}
@@ -73,6 +75,14 @@ public class AlarmRegister implements Serializable{
 
 	public void setProbevalue(ProbeValue probevalue) {
 		this.probevalue = probevalue;
+	}
+
+	public int getAlarm_value() {
+		return alarm_value;
+	}
+
+	public void setAlarm_value(int alarm_value) {
+		this.alarm_value = alarm_value;
 	}
     
 }
