@@ -17,7 +17,7 @@ public interface AlarmRegisterRepository extends JpaRepository <AlarmRegister, L
 	List<AlarmRegister> allAlarmsProbe(Long probedescid);
 	
 	/*Recuperar todos os registros de alarmes, retornando os objetos*/
-	@Query("select a, pv from AlarmRegister ar, Alarm a, ProbeValue pv\n"+
+	@Query("select a, pv, ar.alarm_value from AlarmRegister ar, Alarm a, ProbeValue pv\n"+
 		   "where ar.alarm = a.id\n"+
 		   "and ar.probevalue = pv.id")
 	List<Object[]> allInfoRegisters();
