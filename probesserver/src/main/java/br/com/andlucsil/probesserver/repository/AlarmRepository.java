@@ -2,10 +2,14 @@ package br.com.andlucsil.probesserver.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import br.com.andlucsil.probesserver.model.Alarm;
+import br.com.andlucsil.probesserver.model.ProbeValue;
 
 public interface AlarmRepository extends JpaRepository <Alarm, Long>{
 
@@ -27,4 +31,5 @@ public interface AlarmRepository extends JpaRepository <Alarm, Long>{
 	@Query("select a.active from Alarm a\n"+
 		   "where a.id = ?1")
 	Boolean findAlarmActive(Long alarmid);
+	
 }

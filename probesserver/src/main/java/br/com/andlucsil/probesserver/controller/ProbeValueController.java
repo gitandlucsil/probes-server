@@ -5,8 +5,10 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.andlucsil.probesserver.exception.ResourceNotFoundException;
@@ -99,6 +102,15 @@ public class ProbeValueController {
 	public List<ProbeValue> getLastFiveReads(@PathVariable Long probedescid){
 		Pageable lastfives = PageRequest.of(0, 5);
 		return probevaluerepository.lastFiveReads(probedescid, lastfives);
+	}
+	/*Retorna uma pagina com um numero de leitura desejado pelo usuario*/
+	@GetMapping("/probedesc/{probedescid}/page")
+	public Page<ProbeValue> getPage(@PathVariable Long probedescid,@RequestParam int page,@RequestParam int size, @RequestParam(required = false) String order, @RequestParam(required = false) Boolean asc){
+		PageRequest pageRequest = PageRequest.of(page, size);
+		if(order != null && asc != null) {
+			pageRequest = PageRequest.of(page, size,asc ? Sort.Direction.ASC : Sort.Direction.DESC,order);
+		}
+		return probevaluerepository.getPageProbeValue(probedescid, pageRequest);
 	}
 	/*Método para verificar se uma leitura gerou algum alarme, caso sim, inserir no alarmregister*/
 	public ProbeValue setAlarmByRead(ProbeValue probevalue) {
