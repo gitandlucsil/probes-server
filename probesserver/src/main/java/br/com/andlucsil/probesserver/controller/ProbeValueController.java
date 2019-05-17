@@ -1,6 +1,12 @@
 package br.com.andlucsil.probesserver.controller;
 
+import java.sql.Connection;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -16,7 +22,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,6 +34,10 @@ import br.com.andlucsil.probesserver.repository.AlarmRegisterRepository;
 import br.com.andlucsil.probesserver.repository.AlarmRepository;
 import br.com.andlucsil.probesserver.repository.ProbeDescriptionRepository;
 import br.com.andlucsil.probesserver.repository.ProbeValueRepository;
+import br.com.andlucsil.probesserver.report.GenerateReport;
+import br.com.andlucsil.probesserver.report.connection.ConnectionFactory;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
 
 @RestController
 public class ProbeValueController {
@@ -144,5 +153,20 @@ public class ProbeValueController {
 			}
 		}
 		return probevalue;
+	}
+	
+	/*Gera um relatorio com o resumo detalhado por horario de um determinado dia, contendo valores minimo, maximo e medio de cada horario*/
+	@GetMapping("/probedesc/{probedescid}/report/time")
+	public void getReportByProbeDescByTime(@PathVariable (value = "probedescid") Integer id, @RequestParam String date) throws ParseException, JRException{
+		Connection connection = new ConnectionFactory().getConnection(); //Conecta com o banco
+		JasperCompileManager.compileReportToFile("src/main/resources/reports/probe_info_time.jrxml"); //Compila o arquivo gerado no iReports
+		Map<String, Object> params = new HashMap<String, Object>(); //Inicializa um Map chave-valor, usado como parametro do relatorios
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date dataformat = sdf.parse(date); //Coverte a data recebida como parametro da requisicao URL
+		Integer probe = id;
+		params.put("PROBE", probe);
+		params.put("DATE", dataformat);
+		GenerateReport generateReport = new GenerateReport("src/main/resources/reports/probe_info_time",params,connection);
+		generateReport.generatePdf();
 	}
 }

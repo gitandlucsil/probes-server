@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="probe_info_time" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bcd57228-8655-4a98-b3b1-353ec74db0c7">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="96"/>
+	<subDataset name="charAvgDataSet" uuid="91d4556f-0390-447f-985d-d02b0bca1caf">
+		<parameter name="PROBE" class="java.lang.Integer" isForPrompting="false"/>
+		<parameter name="DATE" class="java.util.Date" isForPrompting="false"/>
+		<queryString>
+			<![CDATA[SELECT pv.read_date as data, MIN(read_value) as minimo, MAX(read_value) as maximo, extract(hour from pv.read_time) as hora, TRUNC(AVG(pv.read_value),2) as medio, pdesc.description as sensor FROM probe_value pv, probe_description pdesc
+WHERE pv.probedescription = $P{PROBE}
+AND pdesc.id = 1
+AND pv.read_date::date = $P{DATE}
+AND pv.read_time::time BETWEEN '00:00:00' AND '23:59:59'
+GROUP BY pv.read_date, extract(hour from pv.read_time), pdesc.description
+ORDER BY extract(hour from pv.read_time)]]>
+		</queryString>
+		<field name="data" class="java.sql.Date"/>
+		<field name="minimo" class="java.lang.Integer"/>
+		<field name="maximo" class="java.lang.Integer"/>
+		<field name="hora" class="java.lang.Double"/>
+		<field name="medio" class="java.math.BigDecimal"/>
+		<field name="sensor" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="PROBE" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="DATE" class="java.util.Date" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[SELECT pv.read_date as data, extract(hour from pv.read_time) as hora,MIN(read_value) as minimo, MAX(read_value) as maximo,TRUNC(AVG(pv.read_value),2) as medio, pdesc.description as sensor ,
+COUNT(read_value) as qtd FROM probe_value pv, probe_description pdesc
+WHERE pv.probedescription = $P{PROBE}
+AND pdesc.id = 1
+AND pv.read_date::date = $P{DATE}
+AND pv.read_time::time BETWEEN '00:00:00' AND '23:59:59'
+GROUP BY pv.read_date, extract(hour from pv.read_time), pdesc.description
+ORDER BY extract(hour from pv.read_time)]]>
+	</queryString>
+	<field name="data" class="java.sql.Date"/>
+	<field name="hora" class="java.lang.Double"/>
+	<field name="minimo" class="java.lang.Integer"/>
+	<field name="maximo" class="java.lang.Integer"/>
+	<field name="medio" class="java.math.BigDecimal"/>
+	<field name="sensor" class="java.lang.String"/>
+	<field name="qtd" class="java.lang.Long"/>
+	<variable name="maximo_1" class="java.lang.Integer" resetType="Group" resetGroup="por_dia" calculation="Lowest">
+		<variableExpression><![CDATA[$F{maximo}]]></variableExpression>
+	</variable>
+	<variable name="minimo_1" class="java.lang.Integer" resetType="Group" resetGroup="por_dia" calculation="Lowest">
+		<variableExpression><![CDATA[$F{minimo}]]></variableExpression>
+	</variable>
+	<variable name="medio_1" class="java.math.BigDecimal" resetType="Group" resetGroup="por_dia" calculation="Average">
+		<variableExpression><![CDATA[$F{medio}]]></variableExpression>
+	</variable>
+	<variable name="medio_2" class="java.lang.Integer" resetType="Group" resetGroup="por_dia" calculation="Count">
+		<variableExpression><![CDATA[$F{medio}]]></variableExpression>
+	</variable>
+	<variable name="medio_3" class="java.lang.Integer" resetType="Group" resetGroup="por_dia" calculation="DistinctCount">
+		<variableExpression><![CDATA[$F{medio}]]></variableExpression>
+	</variable>
+	<variable name="qtd_1" class="java.lang.Long" resetType="Group" resetGroup="por_dia" calculation="Sum">
+		<variableExpression><![CDATA[$F{qtd}]]></variableExpression>
+	</variable>
+	<group name="por_dia">
+		<groupExpression><![CDATA[$F{data}]]></groupExpression>
+		<groupFooter>
+			<band height="20">
+				<rectangle>
+					<reportElement x="145" y="0" width="299" height="20" forecolor="#FFFFFF" backcolor="#E6EBEA" uuid="10a5a251-a0fd-4c73-a488-cf6110491fe9"/>
+					<graphicElement>
+						<pen lineWidth="1.25"/>
+					</graphicElement>
+				</rectangle>
+				<textField>
+					<reportElement x="296" y="0" width="49" height="20" uuid="ddce4807-9e57-4ccd-b271-0f67a33ea199"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{maximo_1}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="247" y="0" width="49" height="20" uuid="ba616d67-880b-4e52-a941-705dd44755a9"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{minimo_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00">
+					<reportElement x="345" y="0" width="49" height="20" uuid="65f07185-9f2c-4c59-9b75-be8b00d95bac"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isUnderline="false" isStrikeThrough="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{medio_1}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="394" y="0" width="49" height="20" uuid="3bd96800-237e-42d4-a133-5f09dab89a04"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{qtd_1}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="55" splitType="Stretch">
+			<staticText>
+				<reportElement x="167" y="0" width="227" height="20" uuid="a7b8a00c-26df-4d86-94b0-eb6378a4922a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Relatorio por hora ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="258" y="0" width="91" height="55" uuid="5adc83d7-6d1f-4a97-a01d-b990ed7f745c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="15" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sensor}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="227" y="17" width="69" height="20" uuid="51a5085a-6159-4eb7-a3b9-785270ab75fe"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sensor]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20">
+			<staticText>
+				<reportElement x="198" y="0" width="49" height="20" uuid="2e49987e-7563-4103-b113-9ea608866d6c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hora]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="247" y="0" width="49" height="20" uuid="f9613bc4-d029-4396-a41d-c24e71e3fcc0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Minimo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="345" y="0" width="49" height="20" uuid="89d31811-d731-4f77-b2e8-38a29dd16bfe"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Médio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="296" y="0" width="49" height="20" uuid="ec0e2e72-f628-4809-991d-081630400ecd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Maximo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="145" y="0" width="53" height="20" uuid="edf0f5a2-dd90-4ef9-9a4b-5197c182f7b8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="394" y="0" width="49" height="20" uuid="74a879dc-e47d-49d3-aa75-2bf85d3587b2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Leituras]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="145" y="0" width="53" height="20" uuid="c166273e-a9bb-4f2b-944f-54b45807028f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="198" y="0" width="49" height="20" uuid="8a4f6491-24b9-487e-b95a-a808c44e3f1e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{hora}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="247" y="0" width="49" height="20" uuid="105f4181-8ef8-4e55-864a-95d18f6073f7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{minimo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="296" y="0" width="49" height="20" uuid="924c2121-8d24-42ef-ac2c-c79261c6914a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{maximo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="345" y="0" width="49" height="20" uuid="8bc0d52f-856a-4ad3-bfeb-c5d1db513bc0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{medio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="394" y="0" width="49" height="20" uuid="ba89c32f-c63a-4195-9fc4-6bff89a5e143"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qtd}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20">
+			<textField>
+				<reportElement x="375" y="0" width="80" height="20" uuid="1555eecd-4a1d-4724-b9aa-7a37b377b9c3"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="56" height="20" uuid="383ad851-6ecd-4cc1-8910-b5c6a7731bdd"/>
+				<text><![CDATA[Gerado em:]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="455" y="0" width="100" height="20" uuid="9231feb2-3a90-43fc-affc-24b67441815d"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH.mm">
+				<reportElement x="118" y="0" width="100" height="20" uuid="01024ea1-22a1-4194-9426-6e1cf388064b"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="56" y="0" width="100" height="20" uuid="4ef80252-daa7-493e-8de2-441674f0131e"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<break>
+				<reportElement x="0" y="17" width="100" height="1" uuid="0059c1b6-5d01-44fa-8a73-0dcb5836261a"/>
+			</break>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="225">
+			<xyLineChart>
+				<chart>
+					<reportElement x="0" y="0" width="555" height="225" uuid="5faab954-0224-4f0d-a680-8fc27fa5dc6c"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<xyDataset>
+					<dataset>
+						<datasetRun subDataset="charAvgDataSet" uuid="e03d640c-1a13-4f59-ba23-99ad6bdf2458">
+							<datasetParameter name="PROBE">
+								<datasetParameterExpression><![CDATA[$P{PROBE}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="DATE">
+								<datasetParameterExpression><![CDATA[$P{DATE}]]></datasetParameterExpression>
+							</datasetParameter>
+						</datasetRun>
+					</dataset>
+					<xySeries>
+						<seriesExpression><![CDATA["Maximo"]]></seriesExpression>
+						<xValueExpression><![CDATA[$F{hora}]]></xValueExpression>
+						<yValueExpression><![CDATA[$F{maximo}]]></yValueExpression>
+					</xySeries>
+					<xySeries>
+						<seriesExpression><![CDATA["Minimo"]]></seriesExpression>
+						<xValueExpression><![CDATA[$F{hora}]]></xValueExpression>
+						<yValueExpression><![CDATA[$F{minimo}]]></yValueExpression>
+					</xySeries>
+					<xySeries>
+						<seriesExpression><![CDATA["Médio"]]></seriesExpression>
+						<xValueExpression><![CDATA[$F{hora}]]></xValueExpression>
+						<yValueExpression><![CDATA[$F{medio}]]></yValueExpression>
+					</xySeries>
+				</xyDataset>
+				<linePlot>
+					<plot/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</linePlot>
+			</xyLineChart>
+		</band>
+	</summary>
+</jasperReport>
