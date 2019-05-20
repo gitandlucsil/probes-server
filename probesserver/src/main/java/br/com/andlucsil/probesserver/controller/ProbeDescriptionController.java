@@ -20,7 +20,7 @@ import br.com.andlucsil.probesserver.model.ProbeDescription;
 import br.com.andlucsil.probesserver.repository.ProbeDescriptionRepository;
 
 @RestController
-@RequestMapping("/probedesc")
+@RequestMapping("/probe")
 public class ProbeDescriptionController {
 
 	@Autowired

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="probe_info_time" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bcd57228-8655-4a98-b3b1-353ec74db0c7">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="96"/>
+	<property name="ireport.y" value="0"/>
 	<subDataset name="charAvgDataSet" uuid="91d4556f-0390-447f-985d-d02b0bca1caf">
 		<parameter name="PROBE" class="java.lang.Integer" isForPrompting="false"/>
 		<parameter name="DATE" class="java.util.Date" isForPrompting="false"/>
@@ -28,7 +28,7 @@ ORDER BY extract(hour from pv.read_time)]]>
 		<![CDATA[SELECT pv.read_date as data, extract(hour from pv.read_time) as hora,MIN(read_value) as minimo, MAX(read_value) as maximo,TRUNC(AVG(pv.read_value),2) as medio, pdesc.description as sensor ,
 COUNT(read_value) as qtd FROM probe_value pv, probe_description pdesc
 WHERE pv.probedescription = $P{PROBE}
-AND pdesc.id = 1
+AND pdesc.id = $P{PROBE}
 AND pv.read_date::date = $P{DATE}
 AND pv.read_time::time BETWEEN '00:00:00' AND '23:59:59'
 GROUP BY pv.read_date, extract(hour from pv.read_time), pdesc.description

@@ -35,7 +35,7 @@ public class AlarmRegisterController {
 		return alarmregisterrespository.allInfoRegisterById(id);
 	}
 	/*Retorna todos os registros de alarmes de um determinado sensor,retornando uma lista dos objetos que formam o registro */
-	@GetMapping("/probedesc/{probedescid}/alarm/register")
+	@GetMapping("/probe/{probedescid}/alarm/register")
 	public List<Object[]> getAllAlarmRegisterByProbe(@PathVariable (value = "probedescid") Long id){
 		return alarmregisterrespository.allInfoRegistersByProbe(id);
 	}
@@ -51,7 +51,7 @@ public class AlarmRegisterController {
 	}
 	
 	/*Retorna uma pagina de registro de alarmes de um determinado sensor*/
-	@GetMapping("/probedesc/{probedescid}/alarm/register/page")
+	@GetMapping("/probe/{probedescid}/alarm/register/page")
 	public Page<Object[]> getPageByAlarm(@PathVariable (value = "probedescid") Long id,@RequestParam int page,@RequestParam int size, @RequestParam(required = false) String order, @RequestParam(required = false) Boolean asc){
 		PageRequest pageRequest = PageRequest.of(page, size);
 		if(order != null && asc != null) {

@@ -38,12 +38,12 @@ public class AlarmController {
 		return alarmrepository.findById(id).orElse(new Alarm());
 	}
 	
-	@GetMapping("/probedesc/{probedescid}/alarm")
+	@GetMapping("/probe/{probedescid}/alarm")
 	public List<Alarm> getAllAlarmsByDescId(@PathVariable (value = "probedescid") Long id){
 		return alarmrepository.findByProbedescriptionId(id);
 	}
 	
-	@PostMapping("/probedesc/{probedescid}/alarm")
+	@PostMapping("/probe/{probedescid}/alarm")
 	public Alarm saveAlarm(@PathVariable (value = "probedescid") Long id, @Valid @RequestBody Alarm alarm) {
 		return probedescriptionrepository.findById(id).map(probedesc -> {
 			alarm.setProbedescription(probedesc);
@@ -51,7 +51,7 @@ public class AlarmController {
 		}).orElseThrow(() -> new ResourceNotFoundException("ProbeId " + id + " não encontrado"));
 	}
 	
-	@PutMapping("probedesc/{probedescid}/alarm/{alarmid}")
+	@PutMapping("probe/{probedescid}/alarm/{alarmid}")
 	public @Valid Alarm updateAlarm(@PathVariable (value = "probedescid") Long desc_id, @PathVariable (value = "alarmid") Long alarm_id, @Valid @RequestBody Alarm alarm) {
 		if(!probedescriptionrepository.existsById(desc_id)) {
 			throw new ResourceNotFoundException("ProbeDescriptionId " + desc_id + " não encontrado");
@@ -81,7 +81,7 @@ public class AlarmController {
 		return alarmrepository.findAllActives();
 	}
 	
-	@GetMapping("probedesc/{probedescid}/alarm/actives")
+	@GetMapping("probe/{probedescid}/alarm/actives")
 	public List<Alarm> getAllAlarmsActivesByProbes(@PathVariable (value = "probedescid") Long id){
 		return alarmrepository.findAllActivesById(id);
 	}

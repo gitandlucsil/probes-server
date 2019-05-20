@@ -57,12 +57,12 @@ public class ProbeValueController {
 		return probevaluerepository.findAll();
 	}
 	/*Retorna as leituras de um determinado sensor*/
-	@GetMapping("/probedesc/{probedescid}/probevalue")
+	@GetMapping("/probe/{probedescid}/value")
 	public List<ProbeValue> getAllProbesValuesByDescId(@PathVariable (value = "probedescid") Long id){
 		return probevaluerepository.findByProbedescriptionId(id);
 	}
 	/*Insere uma leitura para um determinado sensor*/
-	@PostMapping("/probedesc/{probedescid}/probevalue")
+	@PostMapping("/probe/{probedescid}/value")
 	public ProbeValue saveProbeValue(@PathVariable (value = "probedescid") Long id, @Valid @RequestBody ProbeValue probevalue){
 		return probedescriptionrepository.findById(id).map(probedesc -> {
 			probevalue.setProbedescription(probedesc);
@@ -70,7 +70,7 @@ public class ProbeValueController {
 		}).orElseThrow(() -> new ResourceNotFoundException("ProbeId " + id + " não encontrado"));
 	}
 	/*Altera a leitura para um determinado sensor*/
-	@PutMapping("/probedesc/{probedescid}/probevalue/{probevalueid}")
+	@PutMapping("/probe/{probedescid}/value/{probevalueid}")
 	public ProbeValue updateProbeValue(@PathVariable (value = "probedescid") Long desc_id, @PathVariable (value = "probevalueid") Long value_id, @Valid @RequestBody ProbeValue probevalue) {
 		if(!probedescriptionrepository.existsById(desc_id)) {
 			throw new ResourceNotFoundException("ProbeDescriptionId " + desc_id + " não encontrado");
@@ -84,7 +84,7 @@ public class ProbeValueController {
 		}).orElseThrow(() -> new ResourceNotFoundException("ProbeId " + value_id + " não encontrado"));
 	}
 	/*Deleta a leitura para um determinado sensor*/
-	@DeleteMapping("/probevalue/{id}")
+	@DeleteMapping("/value/{id}")
 	public ResponseEntity<?> deleteProbeValue(@PathVariable Long id){
 		return probevaluerepository.findById(id).map(probevalue -> {
 			probevaluerepository.delete(probevalue);
@@ -92,28 +92,28 @@ public class ProbeValueController {
 		}).orElseThrow(() -> new ResourceNotFoundException("ProbeId " + id + " não encontrado"));
 	}
 	/*Retorna o valor médio da leitura de um sensor*/
-	@GetMapping("/probedesc/{probedescid}/avg")
+	@GetMapping("/probe/{probedescid}/avg")
 	public Double viewAvgValue(@PathVariable (value = "probedescid") Long id) {
 		return probevaluerepository.averageReadProbe(id);
 	}
 	/*Retorna o valor máximo da leitura de um sensor*/
-	@GetMapping("/probedesc/{probedescid}/max")
+	@GetMapping("/probe/{probedescid}/max")
 	public Integer viewMaxValue(@PathVariable (value = "probedescid") Long id) {
 		return probevaluerepository.maxReadProbe(id);
 	}
 	/*Retorna o valor minimo da leitura de um sensor*/
-	@GetMapping("/probedesc/{probedescid}/min")
+	@GetMapping("/probe/{probedescid}/min")
 	public Integer viewMinValue(@PathVariable (value = "probedescid") Long id) {
 		return probevaluerepository.minReadProbe(id);
 	}
 	/*Retorna as ultimas cinco leituras*/
-	@GetMapping("/probedesc/{probedescid}/lastfives")
+	@GetMapping("/probe/{probedescid}/lastfives")
 	public List<ProbeValue> getLastFiveReads(@PathVariable Long probedescid){
 		Pageable lastfives = PageRequest.of(0, 5);
 		return probevaluerepository.lastFiveReads(probedescid, lastfives);
 	}
 	/*Retorna uma pagina com um numero de leitura desejado pelo usuario*/
-	@GetMapping("/probedesc/{probedescid}/page")
+	@GetMapping("/probe/{probedescid}/page")
 	public Page<ProbeValue> getPage(@PathVariable Long probedescid,@RequestParam int page,@RequestParam int size, @RequestParam(required = false) String order, @RequestParam(required = false) Boolean asc){
 		PageRequest pageRequest = PageRequest.of(page, size);
 		if(order != null && asc != null) {
@@ -155,18 +155,31 @@ public class ProbeValueController {
 		return probevalue;
 	}
 	
-	/*Gera um relatorio com o resumo detalhado por horario de um determinado dia, contendo valores minimo, maximo e medio de cada horario*/
-	@GetMapping("/probedesc/{probedescid}/report/time")
-	public void getReportByProbeDescByTime(@PathVariable (value = "probedescid") Integer id, @RequestParam String date) throws ParseException, JRException{
-		Connection connection = new ConnectionFactory().getConnection(); //Conecta com o banco
-		JasperCompileManager.compileReportToFile("src/main/resources/reports/probe_info_time.jrxml"); //Compila o arquivo gerado no iReports
-		Map<String, Object> params = new HashMap<String, Object>(); //Inicializa um Map chave-valor, usado como parametro do relatorios
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		Date dataformat = sdf.parse(date); //Coverte a data recebida como parametro da requisicao URL
-		Integer probe = id;
-		params.put("PROBE", probe);
-		params.put("DATE", dataformat);
-		GenerateReport generateReport = new GenerateReport("src/main/resources/reports/probe_info_time",params,connection);
-		generateReport.generatePdf();
+	/*Gera um relatorio com o resumo detalhado por horario de uma determinada data, contendo valores minimo, maximo e medio de cada horario*/
+	@SuppressWarnings("finally")
+	@GetMapping("/probe/{probedescid}/report/time")
+	public Boolean getReportByProbeDescByTime(@PathVariable (value = "probedescid") Integer id, @RequestParam String date){
+		Boolean return_pdf = false;
+		try {
+			Connection connection = new ConnectionFactory().getConnection(); //Conecta com o banco
+			JasperCompileManager.compileReportToFile("src/main/resources/reports/probe_info_time.jrxml"); //Compila o arquivo gerado no iReports
+			Map<String, Object> params = new HashMap<String, Object>(); //Inicializa um Map chave-valor, usado como parametro do relatorios
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Date dataformat = sdf.parse(date); //Coverte a data recebida como parametro da requisicao URL
+			Integer probe = id;
+			params.put("PROBE", probe);
+			params.put("DATE", dataformat);
+			GenerateReport generateReport = new GenerateReport("src/main/resources/reports/probe_info_time",params,connection);
+			generateReport.generatePdf();
+			return_pdf = true;
+		}catch(Exception e) {
+			return_pdf = false;
+			e.printStackTrace();
+		}finally {
+			return return_pdf;
+		}
+
 	}
+	
+	/*Gera um relatorio com todas as leituras de dois sensores, entre duas datas*/
 }
