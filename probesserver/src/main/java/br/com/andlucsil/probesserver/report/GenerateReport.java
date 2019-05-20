@@ -21,6 +21,7 @@ public class GenerateReport {
 	}
 	
 	public void generatePdf() throws JRException {
+		System.out.println("Vai gerar o relatorio de: "+this.fileName);
 		JasperPrint jasperPrint = JasperFillManager.fillReport(this.fileName+".jasper", this.params, this.connection);
 		JasperExportManager.exportReportToPdfFile(jasperPrint,this.fileName + ".pdf");
 		System.out.println("Finalizado o relatorio do arquivo: "+this.fileName);

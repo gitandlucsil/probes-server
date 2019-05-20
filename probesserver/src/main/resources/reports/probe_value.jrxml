@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="probe_value" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cd339351-edaf-4125-8334-7c6e9c0aaa47">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="charDataSet" uuid="69df127d-b186-432a-b0dc-8a15cf6573fe">
+		<parameter name="DATE_BEGIN" class="java.util.Date" isForPrompting="false"/>
+		<parameter name="DATE_END" class="java.util.Date" isForPrompting="false"/>
+		<parameter name="PROBE" class="java.lang.Integer" isForPrompting="false"/>
+		<queryString>
+			<![CDATA[select * from probe_value
+where probedescription = $P{PROBE}
+and read_date between  $P{DATE_BEGIN} and $P{DATE_END}]]>
+		</queryString>
+		<field name="id" class="java.lang.Long"/>
+		<field name="read_date" class="java.sql.Date"/>
+		<field name="read_time" class="java.sql.Time"/>
+		<field name="read_value" class="java.lang.Integer"/>
+		<field name="probedescription" class="java.lang.Long"/>
+	</subDataset>
+	<parameter name="PROBE" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="DATE_BEGIN" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="DATE_END" class="java.util.Date" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[select pv.read_date as data,pv.read_time as time, pv.read_value as valor, pdesc.description as probe from probe_value pv, probe_description pdesc
+where pv.probedescription = pdesc.id
+and pdesc.id = $P{PROBE}
+and  pv.read_date BETWEEN $P{DATE_BEGIN} AND $P{DATE_END}]]>
+	</queryString>
+	<field name="data" class="java.sql.Date"/>
+	<field name="time" class="java.sql.Time"/>
+	<field name="valor" class="java.lang.Integer"/>
+	<field name="probe" class="java.lang.String"/>
+	<variable name="valor_1" class="java.lang.Integer" resetType="Column" calculation="Average">
+		<variableExpression><![CDATA[$F{valor}]]></variableExpression>
+	</variable>
+	<variable name="valor_2" class="java.lang.Integer" resetType="Column" calculation="Highest">
+		<variableExpression><![CDATA[$F{valor}]]></variableExpression>
+	</variable>
+	<variable name="valor_3" class="java.lang.Integer" resetType="Column" calculation="Lowest">
+		<variableExpression><![CDATA[$F{valor}]]></variableExpression>
+	</variable>
+	<variable name="valor_4" class="java.lang.Integer" resetType="Group" resetGroup="por_dia" calculation="Average">
+		<variableExpression><![CDATA[$F{valor}]]></variableExpression>
+	</variable>
+	<variable name="valor_5" class="java.lang.Integer" resetType="Group" resetGroup="por_dia" calculation="Highest">
+		<variableExpression><![CDATA[$F{valor}]]></variableExpression>
+	</variable>
+	<variable name="valor_6" class="java.lang.Integer" resetType="Group" resetGroup="por_dia" calculation="Lowest">
+		<variableExpression><![CDATA[$F{valor}]]></variableExpression>
+	</variable>
+	<variable name="valor_7" class="java.lang.Integer" resetType="Group" resetGroup="por_hora" calculation="Average">
+		<variableExpression><![CDATA[$F{valor}]]></variableExpression>
+	</variable>
+	<variable name="valor_8" class="java.lang.Integer" resetType="Group" resetGroup="por_hora" calculation="Highest">
+		<variableExpression><![CDATA[$F{valor}]]></variableExpression>
+	</variable>
+	<variable name="valor_9" class="java.lang.Integer" resetType="Group" resetGroup="por_hora" calculation="Lowest">
+		<variableExpression><![CDATA[$F{valor}]]></variableExpression>
+	</variable>
+	<group name="por_dia">
+		<groupExpression><![CDATA[$F{data}.getDay()]]></groupExpression>
+		<groupFooter>
+			<band height="20">
+				<rectangle>
+					<reportElement x="0" y="0" width="555" height="20" uuid="7b924319-71b1-4c9e-b8b1-c065b9471128"/>
+					<graphicElement>
+						<pen lineWidth="1.25"/>
+					</graphicElement>
+				</rectangle>
+				<textField>
+					<reportElement x="184" y="0" width="62" height="20" uuid="08c4025c-994c-4d75-9d44-e97980393ce8"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{valor_4}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="176" y="0" width="42" height="20" uuid="1fec6873-0914-411c-950d-b0eb3cbe0968"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Média:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="0" width="100" height="20" uuid="c256b703-674e-4890-a8e2-de43568b545f"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[ Dia:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="29" y="0" width="100" height="20" uuid="3280fade-4eaa-44ec-a1d8-9c3407f6d0cf"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{data}.getDate()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="254" y="0" width="42" height="20" uuid="08c3bb31-feb0-4ecd-9154-51f69081375d"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Maior:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="260" y="0" width="62" height="20" uuid="a7295294-1acc-4bc8-abd3-3fe798f6e530"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{valor_5}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="333" y="0" width="42" height="20" uuid="02e49a78-24f1-43b5-a94e-c8d8e60b830c"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[Menor:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="334" y="0" width="79" height="20" uuid="0ee542bd-ba3c-4d04-aa58-2572f92bde8f"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{valor_6}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="por_hora">
+		<groupExpression><![CDATA[$F{time}.getHours()]]></groupExpression>
+		<groupFooter>
+			<band height="20">
+				<rectangle>
+					<reportElement x="0" y="0" width="555" height="20" uuid="8127c7ba-540a-4df9-96b8-afde835b3813"/>
+					<graphicElement>
+						<pen lineWidth="1.25"/>
+					</graphicElement>
+				</rectangle>
+				<textField>
+					<reportElement x="260" y="0" width="62" height="20" uuid="02ed7e6d-3c0e-4ba3-9e48-de26b90a22ad"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{valor_8}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="334" y="0" width="79" height="20" uuid="c91ed17c-dafa-4ac1-abbc-40dd026b1ac3"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{valor_9}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="333" y="0" width="42" height="20" uuid="9bed7122-2848-43d9-a804-407300ab0295"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[Menor:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="254" y="0" width="42" height="20" uuid="99b28cb6-1117-4944-afa9-04a02e4b5334"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Maior:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="0" width="100" height="20" uuid="53abdc22-1b34-4936-a765-6243229f6af8"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[ Hora:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="29" y="0" width="104" height="20" uuid="83b631ac-a107-4765-82ea-23e46969dcf6"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{time}.getHours()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="176" y="0" width="42" height="20" uuid="2b2b8f38-225a-405a-9e63-f8caa59eac31"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Média:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="184" y="0" width="62" height="20" uuid="be47a7ac-4915-4346-b130-0d8e516f4f38"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{valor_7}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<title>
+		<band height="56" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="56" uuid="85ce5943-69e5-40f3-9ca6-aac58d9b0ec4"/>
+				<graphicElement>
+					<pen lineWidth="1.25"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="91" y="0" width="273" height="55" uuid="244b6032-fe23-4fcb-8af2-dae4e8df476c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="30" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Leituras do sensor]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="364" y="0" width="53" height="55" uuid="c59d028b-394d-4d31-9b23-c5da27c3b3d6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="30" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{probe}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="237" y="0" width="80" height="20" uuid="cad96b59-e524-4031-b7a5-e845234ff285"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hora]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="157" y="0" width="80" height="20" uuid="e070b348-14b5-4459-9290-276b3f453d9a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="317" y="0" width="79" height="20" uuid="2a31d4db-0467-4479-afdc-5a79102fc37c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="157" y="0" width="80" height="20" uuid="bff44385-85fb-4864-a84f-e6dd394faa36"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH.mm">
+				<reportElement x="237" y="0" width="80" height="20" uuid="c5bbf922-77be-4226-9e73-3f541328470a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{time}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="317" y="0" width="79" height="20" uuid="48c6cebb-8ad2-42a6-9034-252990bb0036"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20">
+			<textField evaluationTime="Report">
+				<reportElement x="455" y="0" width="100" height="20" uuid="e41b13ee-a60d-4f8e-9dc1-077e702060fb"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="375" y="0" width="80" height="20" uuid="8c5b8820-ea8d-4d6f-ade3-79341e1f59be"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH.mm">
+				<reportElement x="118" y="0" width="100" height="20" uuid="4c9b7995-6ea6-41f0-b7e3-d9bd8959e319"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="56" height="20" uuid="b1a11650-daa5-40c4-9cef-6c8ce5483420"/>
+				<text><![CDATA[Gerado em:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="56" y="0" width="100" height="20" uuid="7ba928ff-4824-44ab-8678-f11290909c44"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="203">
+			<barChart>
+				<chart isShowLegend="false">
+					<reportElement x="0" y="0" width="555" height="203" uuid="2220056a-ac93-45e3-b926-ebe319d16bbd"/>
+					<chartTitle position="Top"/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="charDataSet" uuid="286a3b2f-f35b-45b6-857f-f50a05a41a94">
+							<datasetParameter name="PROBE">
+								<datasetParameterExpression><![CDATA[$P{PROBE}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="DATE_BEGIN">
+								<datasetParameterExpression><![CDATA[$P{DATE_BEGIN}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="DATE_END">
+								<datasetParameterExpression><![CDATA[$P{DATE_END}]]></datasetParameterExpression>
+							</datasetParameter>
+						</datasetRun>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Leitura"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{read_time}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{read_value}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat verticalTickLabels="true"/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+		</band>
+	</summary>
+</jasperReport>

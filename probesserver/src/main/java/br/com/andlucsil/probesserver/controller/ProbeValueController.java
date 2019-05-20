@@ -178,8 +178,34 @@ public class ProbeValueController {
 		}finally {
 			return return_pdf;
 		}
-
 	}
 	
 	/*Gera um relatorio com todas as leituras de dois sensores, entre duas datas*/
+	@SuppressWarnings("finally")
+	@GetMapping("/probe/{probedescid}/report/value")
+	public Boolean getReportByProbeDescValues(@PathVariable (value = "probedescid") Integer id, @RequestParam String date_begin, @RequestParam String date_end){
+		Boolean return_pdf = false;
+		try {
+			System.out.println("probe: "+id+",data_begin: "+date_begin+", data_end:"+date_end);
+			Connection connection = new ConnectionFactory().getConnection(); //Conecta com o banco
+			JasperCompileManager.compileReportToFile("src/main/resources/reports/probe_value.jrxml"); //Compila o arquivo gerado no iReports
+			Map<String, Object> params = new HashMap<String, Object>(); //Inicializa um Map chave-valor, usado como parametro do relatorios
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Date dataformat_begin = sdf.parse(date_begin); //Coverte a data recebida como parametro da requisicao URL
+			Date dataformat_end = sdf.parse(date_end); //Coverte a data recebida como parametro da requisicao URL
+			Integer probe = id;
+			params.put("PROBE", probe);
+			params.put("DATE_BEGIN", dataformat_begin);
+			params.put("DATE_END", dataformat_end);
+			System.out.println("probe: "+probe+",data_begin: "+dataformat_begin+", data_end:"+dataformat_end);
+			GenerateReport generateReport = new GenerateReport("src/main/resources/reports/probe_value",params,connection);
+			generateReport.generatePdf();
+			return_pdf = true;
+		}catch(Exception e) {
+			return_pdf = false;
+			e.printStackTrace();
+		}finally {
+			return return_pdf;
+		}
+	}
 }
