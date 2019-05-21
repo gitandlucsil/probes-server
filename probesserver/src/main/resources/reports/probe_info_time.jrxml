@@ -98,7 +98,7 @@ ORDER BY extract(hour from pv.read_time)]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="55" splitType="Stretch">
+		<band height="37" splitType="Stretch">
 			<staticText>
 				<reportElement x="167" y="0" width="227" height="20" uuid="a7b8a00c-26df-4d86-94b0-eb6378a4922a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -107,7 +107,7 @@ ORDER BY extract(hour from pv.read_time)]]>
 				<text><![CDATA[Relatorio por hora ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="258" y="0" width="91" height="55" uuid="5adc83d7-6d1f-4a97-a01d-b990ed7f745c"/>
+				<reportElement x="258" y="17" width="91" height="20" uuid="5adc83d7-6d1f-4a97-a01d-b990ed7f745c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="15" isBold="true"/>
 				</textElement>

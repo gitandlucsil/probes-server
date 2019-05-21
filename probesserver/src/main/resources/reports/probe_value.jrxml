@@ -209,19 +209,43 @@ and  pv.read_date BETWEEN $P{DATE_BEGIN} AND $P{DATE_END}]]>
 				</graphicElement>
 			</rectangle>
 			<staticText>
-				<reportElement x="91" y="0" width="273" height="55" uuid="244b6032-fe23-4fcb-8af2-dae4e8df476c"/>
+				<reportElement x="100" y="0" width="273" height="41" uuid="244b6032-fe23-4fcb-8af2-dae4e8df476c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="30" isBold="true"/>
+					<font size="15" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Leituras do sensor]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="364" y="0" width="53" height="55" uuid="c59d028b-394d-4d31-9b23-c5da27c3b3d6"/>
+				<reportElement x="305" y="0" width="91" height="41" uuid="c59d028b-394d-4d31-9b23-c5da27c3b3d6"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="30" isBold="true"/>
+					<font size="15" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{probe}]]></textFieldExpression>
 			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="275" y="36" width="100" height="20" uuid="971b5721-5b91-40ad-9974-55e5816e7e3c"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{DATE_END}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="257" y="37" width="34" height="17" uuid="29c11ee0-0c3b-44b0-a1f4-c9d344bdc3fc"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[até]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="175" y="36" width="100" height="20" uuid="fe6365fc-ca4e-4ebd-b9fa-d4ed51720444"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{DATE_BEGIN}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="175" y="37" width="34" height="17" uuid="bc3c862d-3775-49cd-9402-22b14f701535"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[De]]></text>
+			</staticText>
 		</band>
 	</title>
 	<columnHeader>
