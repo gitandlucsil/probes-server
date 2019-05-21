@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="alarm_register_probe" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3f32897d-d584-4e9f-b7d3-d56244049300">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="50"/>
+	<subDataset name="alarms_by_day_hour" uuid="a8a221af-963b-4b2d-82a7-2606368a7a42">
+		<parameter name="PROBE" class="java.lang.Integer" isForPrompting="false"/>
+		<parameter name="DATE_BEGIN" class="java.util.Date" isForPrompting="false"/>
+		<parameter name="DATE_END" class="java.util.Date" isForPrompting="false"/>
+		<queryString>
+			<![CDATA[Select count(*) as total, pv.read_date as dia, extract(hour from pv.read_time) as hora
+from probe_value pv , alarm_register ar, probe_description pdesc, alarm a
+where pv.read_date::date BETWEEN $P{DATE_BEGIN} AND $P{DATE_END}
+and ar.probevalue = pv.id
+and pv.probedescription = pdesc.id
+and ar.alarm = a.id
+and pdesc.id = $P{PROBE}
+group by dia, hora
+order by dia asc, hora asc]]>
+		</queryString>
+		<field name="total" class="java.lang.Long"/>
+		<field name="dia" class="java.sql.Date"/>
+		<field name="hora" class="java.lang.Double"/>
+	</subDataset>
+	<parameter name="PROBE" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="DATE_BEGIN" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="DATE_END" class="java.util.Date" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[Select pdesc.description as probe,
+a.description as alarm,
+ar.alarm_value as alarme_valor,
+pv.read_value as leitura_valor,
+pv.read_date as data,
+pv.read_time as time
+from probe_value pv , alarm_register ar, probe_description pdesc, alarm a
+where pv.read_date::date BETWEEN $P{DATE_BEGIN} AND $P{DATE_END}
+and ar.probevalue = pv.id
+and pv.probedescription = pdesc.id
+and ar.alarm = a.id
+and pdesc.id = $P{PROBE}
+ORDER BY data ASC, time ASC]]>
+	</queryString>
+	<field name="probe" class="java.lang.String"/>
+	<field name="alarm" class="java.lang.String"/>
+	<field name="alarme_valor" class="java.lang.Integer"/>
+	<field name="leitura_valor" class="java.lang.Integer"/>
+	<field name="data" class="java.sql.Date"/>
+	<field name="time" class="java.sql.Time"/>
+	<variable name="alarm_2" class="java.lang.Integer" resetType="Group" resetGroup="por_dia" calculation="Count">
+		<variableExpression><![CDATA[$F{alarm}]]></variableExpression>
+	</variable>
+	<variable name="alarm_1" class="java.lang.Integer" resetType="Group" resetGroup="por_hora" calculation="Count">
+		<variableExpression><![CDATA[$F{alarm}]]></variableExpression>
+	</variable>
+	<group name="por_dia">
+		<groupExpression><![CDATA[$F{data}.getDate()]]></groupExpression>
+		<groupFooter>
+			<band height="21">
+				<rectangle>
+					<reportElement x="117" y="0" width="351" height="21" forecolor="#FFFFFF" backcolor="#E6EBEA" uuid="a85b0c59-6113-4959-9888-ec53d917eb83"/>
+					<graphicElement>
+						<pen lineWidth="1.25"/>
+					</graphicElement>
+				</rectangle>
+				<textField>
+					<reportElement x="416" y="0" width="52" height="20" uuid="ffb2ad1b-089a-4108-89aa-d48c4eb16c20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{alarm_2}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="117" y="0" width="29" height="20" uuid="ebbae601-6387-4b2d-9410-6f77251a1fb3"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Dia:]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement x="117" y="0" width="100" height="20" uuid="72641e22-ee81-44c3-b333-ed425339761e"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="310" y="0" width="129" height="20" uuid="448b634d-4719-40c6-8a64-e9e306252275"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Quantidade de alarmes:]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="por_hora">
+		<groupExpression><![CDATA[$F{time}.getHours()]]></groupExpression>
+		<groupFooter>
+			<band height="20">
+				<rectangle>
+					<reportElement x="118" y="0" width="350" height="20" forecolor="#FFFFFF" backcolor="#E6EBEA" uuid="22b22bf7-1dd8-4576-9066-21b67e5f14bf"/>
+					<graphicElement>
+						<pen lineWidth="1.25"/>
+					</graphicElement>
+				</rectangle>
+				<textField>
+					<reportElement x="416" y="0" width="52" height="20" uuid="cb2505bc-1582-4fc6-99ff-e17fa837f99c"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{alarm_1}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="310" y="0" width="129" height="20" uuid="af373944-7821-4dcd-bc0a-aa5bd708b229"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Quantidade de alarmes:]]></text>
+				</staticText>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement x="110" y="0" width="100" height="20" uuid="3e39abbf-ba9d-41e8-aaeb-911e5a98f1f8"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{time}.getHours()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="117" y="0" width="29" height="20" uuid="a56524bc-2760-4745-817f-bca0507a843b"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Hora:]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="58" splitType="Stretch">
+			<staticText>
+				<reportElement x="194" y="0" width="150" height="20" uuid="54227fd6-1baf-4c92-a2dd-92540a66ad28"/>
+				<textElement>
+					<font size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Registro de Alarmes ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="222" y="21" width="69" height="20" uuid="ad7e3e0f-4f3f-4107-bee5-7974db7a3f4d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sensor]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="253" y="4" width="91" height="54" uuid="f5f2def5-7888-49e1-844b-f84a761ea197"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="15" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{probe}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="194" y="39" width="34" height="17" uuid="77b80475-be6c-4705-88b9-3a5a638b5c02"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[De]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="194" y="38" width="100" height="20" uuid="22e04be0-9e6c-43a1-9ab2-6e9080dca74c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{DATE_BEGIN}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="276" y="39" width="34" height="17" uuid="c6a6387f-9d38-4ffd-8cc6-35938ae78d04"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[até]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="294" y="38" width="100" height="20" uuid="47d38371-4525-4a45-b13c-a5bd2115d3b6"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{DATE_END}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="363" y="0" width="53" height="20" uuid="f21a244f-1311-4b35-8e51-667695d13645"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sensor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="222" y="0" width="88" height="20" uuid="3b6278dc-89ec-4387-a14d-346a8c204ed8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Alarme]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="0" width="53" height="20" uuid="b88f2fac-e10e-44ab-a731-ecfca861054e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SP Alarme]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="415" y="0" width="53" height="20" uuid="3d35f414-a9af-4469-9f8a-a36104acccdb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Leitura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="169" y="0" width="53" height="20" uuid="856870c9-f6e2-41eb-9cdc-dd1944b1dc68"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hora]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="117" y="0" width="53" height="20" uuid="6d635981-9260-4cdd-bd09-20e35537a758"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="363" y="0" width="53" height="20" uuid="2bf2440a-3451-4ec0-9a2f-37552eb9c79e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{probe}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="222" y="0" width="88" height="20" uuid="3cbff0dc-1efb-4147-812a-b8be10eae383"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{alarm}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="310" y="0" width="53" height="20" uuid="e37f59f3-e52d-48da-9e57-8b3a80cfbd33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{alarme_valor}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="117" y="0" width="53" height="20" uuid="037c58fa-8252-4b74-8d9d-b6fd5f51329a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH.mm">
+				<reportElement x="169" y="0" width="53" height="20" uuid="7577d2d1-2c6c-467f-a219-2aa8e690a26b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{time}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="415" y="0" width="53" height="20" uuid="4faa0db8-12ed-4ba2-bd30-0948a0d51286"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{leitura_valor}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField pattern="HH.mm">
+				<reportElement x="118" y="0" width="100" height="20" uuid="f36a4f92-edf3-4772-8498-d45af7ae1bc4"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="56" height="20" uuid="d556583b-5f32-4752-a0df-8fca4629acf9"/>
+				<text><![CDATA[Gerado em:]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="455" y="0" width="100" height="20" uuid="707f32f4-41f9-4c93-80b0-872aab2bc80d"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="375" y="0" width="80" height="20" uuid="8cdeee2c-7b86-4aa3-ae4d-54b007d03497"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="56" y="0" width="100" height="20" uuid="2a35af50-e27c-412d-972e-74c58d11ece3"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="127" splitType="Stretch">
+			<lineChart>
+				<chart>
+					<reportElement x="0" y="0" width="555" height="127" uuid="4b893c33-23e7-4dc7-b436-b79d3b0b1609"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="alarms_by_day_hour" uuid="34d5aa67-76f2-4d8d-8aa2-04f7cc14922d">
+							<datasetParameter name="PROBE">
+								<datasetParameterExpression><![CDATA[$P{PROBE}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="DATE_BEGIN">
+								<datasetParameterExpression><![CDATA[$P{DATE_BEGIN}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="DATE_END">
+								<datasetParameterExpression><![CDATA[$P{DATE_END}]]></datasetParameterExpression>
+							</datasetParameter>
+						</datasetRun>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Alarmes por hora"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{dia}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{total}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<linePlot>
+					<plot/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</linePlot>
+			</lineChart>
+		</band>
+	</summary>
+</jasperReport>
