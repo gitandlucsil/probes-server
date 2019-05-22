@@ -2,25 +2,24 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="alarm_register_probe" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3f32897d-d584-4e9f-b7d3-d56244049300">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="50"/>
+	<property name="ireport.y" value="0"/>
 	<subDataset name="alarms_by_day_hour" uuid="a8a221af-963b-4b2d-82a7-2606368a7a42">
 		<parameter name="PROBE" class="java.lang.Integer" isForPrompting="false"/>
 		<parameter name="DATE_BEGIN" class="java.util.Date" isForPrompting="false"/>
 		<parameter name="DATE_END" class="java.util.Date" isForPrompting="false"/>
 		<queryString>
-			<![CDATA[Select count(*) as total, pv.read_date as dia, extract(hour from pv.read_time) as hora
+			<![CDATA[Select count(*) as total, pv.read_date as dia
 from probe_value pv , alarm_register ar, probe_description pdesc, alarm a
 where pv.read_date::date BETWEEN $P{DATE_BEGIN} AND $P{DATE_END}
 and ar.probevalue = pv.id
 and pv.probedescription = pdesc.id
 and ar.alarm = a.id
 and pdesc.id = $P{PROBE}
-group by dia, hora
-order by dia asc, hora asc]]>
+group by dia
+order by dia asc]]>
 		</queryString>
 		<field name="total" class="java.lang.Long"/>
 		<field name="dia" class="java.sql.Date"/>
-		<field name="hora" class="java.lang.Double"/>
 	</subDataset>
 	<parameter name="PROBE" class="java.lang.Integer" isForPrompting="false"/>
 	<parameter name="DATE_BEGIN" class="java.util.Date" isForPrompting="false"/>
@@ -134,7 +133,7 @@ ORDER BY data ASC, time ASC]]>
 	<title>
 		<band height="58" splitType="Stretch">
 			<staticText>
-				<reportElement x="194" y="0" width="150" height="20" uuid="54227fd6-1baf-4c92-a2dd-92540a66ad28"/>
+				<reportElement x="194" y="0" width="169" height="20" uuid="54227fd6-1baf-4c92-a2dd-92540a66ad28"/>
 				<textElement>
 					<font size="15" isBold="true"/>
 				</textElement>
@@ -309,7 +308,7 @@ ORDER BY data ASC, time ASC]]>
 						</datasetRun>
 					</dataset>
 					<categorySeries>
-						<seriesExpression><![CDATA["Alarmes por hora"]]></seriesExpression>
+						<seriesExpression><![CDATA["Alarmes por dia"]]></seriesExpression>
 						<categoryExpression><![CDATA[$F{dia}]]></categoryExpression>
 						<valueExpression><![CDATA[$F{total}]]></valueExpression>
 					</categorySeries>
